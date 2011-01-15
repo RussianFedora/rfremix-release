@@ -1,0 +1,10 @@
+[Layout]
+DisplayNames=us
+IndicatorOnly=true
+LayoutList=us
+Options=
+ResetOldOptions=true
+ShowFlag=true
+ShowSingle=false
+SwitchMode=Global
+Use=true
