@@ -2,17 +2,17 @@
 %define dist_version 14
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
-%define rfremix_version 14
+%define rfremix_version 14.1
 
 Summary:	Russian Fedora Remix release files
 Name:		rfremix-release
 Version:	14
-Release:	2
+Release:	3
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
-Source:		rfremix-release-%{version}.tar.lzma
+Source:		https://github.com/Tigro/tarballs/raw/master/rfremix-release-%{version}.tar.lzma
 Source1:	rfremix-install-media-dvd.repo
 
 Obsoletes:	redhat-release
@@ -118,6 +118,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Mar  9 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 14-3
+- update rfremix to 14.1
+
 * Fri Oct 22 2010 Arkady L. Shane <ashejn@yandex-team.ru> - 14-2
 - forget epoch in Requires.
 
