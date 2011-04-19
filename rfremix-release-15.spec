@@ -33,7 +33,7 @@ various /etc/ files that define the release.
 Summary:        Rawhide repo definitions
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Provides:	fedora-release-rawhide = %{epoch}:%{version}-%{release}
-Obsoletes:	fedora-release-rawhide = %{epoch}:%{version}-%{release}
+Obsoletes:	fedora-release-rawhide
 
 %description rawhide
 This package provides the rawhide repo definitions.
