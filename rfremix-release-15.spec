@@ -7,7 +7,7 @@
 Summary:	Russian Fedora Remix release files
 Name:		rfremix-release
 Version:	15
-Release:	0.7
+Release:	0.8
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -54,8 +54,8 @@ cp -p $RPM_BUILD_ROOT/etc/rfremix-release $RPM_BUILD_ROOT/etc/issue
 echo "Kernel \r on an \m (\l)" >> $RPM_BUILD_ROOT/etc/issue
 cp -p $RPM_BUILD_ROOT/etc/issue $RPM_BUILD_ROOT/etc/issue.net
 echo >> $RPM_BUILD_ROOT/etc/issue
-ln -s rfremix-release $RPM_BUILD_ROOT/etc/redhat-release
-ln -s rfremix-release $RPM_BUILD_ROOT/etc/system-release
+ln -s fedora-release $RPM_BUILD_ROOT/etc/redhat-release
+ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 
 install -d -m 755 $RPM_BUILD_ROOT/etc/pki/rpm-gpg
 
@@ -118,6 +118,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Mar 17 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15-0.8
+- system- and redhat-release links to fedora-release
+
 * Thu Mar 17 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15-0.7
 - update to RFRemix 15 Beta
 
