@@ -12,7 +12,7 @@ Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
-Source:		https://github.com/Tigro/tarballs/raw/master/rfremix-release-%{version}.tar.lzma
+Source:		http://koji.russianfedora.ru/storage/%{name}/%{name}-%{version}.tar.lzma
 Source1:	rfremix-install-media-dvd.repo
 
 Obsoletes:	redhat-release
