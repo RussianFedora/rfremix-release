@@ -7,12 +7,12 @@
 Summary:	Russian Fedora Remix release files
 Name:		rfremix-release
 Version:	15
-Release:	0.8
+Release:	1.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
-Source:		http://koji.russianfedora.ru/storage/%{name}/%{name}-%{version}.tar.lzma
+Source:		http://koji.russianfedora.ru/storage/%{name}/%{name}-%{version}.tar.bz2
 Source1:	rfremix-install-media-dvd.repo
 
 Obsoletes:	redhat-release
@@ -54,8 +54,8 @@ cp -p $RPM_BUILD_ROOT/etc/rfremix-release $RPM_BUILD_ROOT/etc/issue
 echo "Kernel \r on an \m (\l)" >> $RPM_BUILD_ROOT/etc/issue
 cp -p $RPM_BUILD_ROOT/etc/issue $RPM_BUILD_ROOT/etc/issue.net
 echo >> $RPM_BUILD_ROOT/etc/issue
-ln -s fedora-release $RPM_BUILD_ROOT/etc/redhat-release
-ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
+ln -s rfremix-release $RPM_BUILD_ROOT/etc/redhat-release
+ln -s rfremix-release $RPM_BUILD_ROOT/etc/system-release
 
 install -d -m 755 $RPM_BUILD_ROOT/etc/pki/rpm-gpg
 
@@ -118,6 +118,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri May 13 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15-1.R
+- enable updates
+- disable updates-testing
+- enable metadata_expire for 7 days for fedora repo
+- link system- and redhat-release to rfremix-release again
+
 * Thu Mar 17 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15-0.8
 - system- and redhat-release links to fedora-release
 
