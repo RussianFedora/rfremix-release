@@ -6,13 +6,13 @@
 
 Summary:	Russian Fedora Remix release files
 Name:		rfremix-release
-Version:	15
+Version:	15.1
 Release:	1.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
-Source:		http://koji.russianfedora.ru/storage/%{name}/%{name}-%{version}.tar.bz2
+Source:		http://koji.russianfedora.ru/storage/%{name}/%{name}-15.tar.bz2
 Source1:	rfremix-install-media-dvd.repo
 
 Obsoletes:	redhat-release
@@ -40,7 +40,7 @@ This package provides the rawhide repo definitions.
 
 
 %prep
-%setup -q
+%setup -q -n %{name}-15
 
 %build
 
@@ -118,6 +118,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jul 26 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15.1-1.R
+- release 15.1
+
 * Fri May 13 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15-1.R
 - enable updates
 - disable updates-testing
