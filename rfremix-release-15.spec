@@ -6,8 +6,8 @@
 
 Summary:	Russian Fedora Remix release files
 Name:		rfremix-release
-Version:	15.1
-Release:	1.1.R
+Version:	15
+Release:	2.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -118,11 +118,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Thu Jul 28 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15.1-1.1.R
-- fix version in release files
-
-* Tue Jul 26 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15.1-1.R
-- release 15.1
+* Thu Jul 28 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15-2.R
+- fix version in release files and package version
+- update to 15.1
 
 * Fri May 13 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15-1.R
 - enable updates
