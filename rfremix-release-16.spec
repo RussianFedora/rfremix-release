@@ -7,13 +7,14 @@
 Summary:	Russian Fedora Remix release files
 Name:		rfremix-release
 Version:	16
-Release:	0.9.R
+Release:	1.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
 Source:		http://download.rfremix.ru/storage/%{name}/%{name}-%{version}.tar.bz2
 Source1:	rfremix-install-media-dvd.repo
+Patch0:		rfremix-release-16-released.patch
 
 Obsoletes:	redhat-release
 Provides:	redhat-release
@@ -41,6 +42,7 @@ This package provides the rawhide repo definitions.
 
 %prep
 %setup -q
+%patch0 -p1 -b .released
 
 %build
 
@@ -122,6 +124,12 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+
+* Wed Oct 26 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 16-1.R
+- enable updates
+- disable updates-testing
+- set metadate_expire to 7days on the fedora repo
+
 * Fri Sep 16 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 16-0.9.R
 - update for RFRemix 16-Beta
 
