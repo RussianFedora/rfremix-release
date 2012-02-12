@@ -2,6 +2,8 @@
 name=RFRemix Install Media DVD - $basearch
 failovermethod=priority
 baseurl=file:///media/RFRemix%2017%20$basearch%20DVD/
+        file:///media/RFRemix%2017-Beta%20$basearch%20DVD/
+        file:///media/RFRemix%2017-Alpha%20$basearch%20DVD/
 enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-$basearch

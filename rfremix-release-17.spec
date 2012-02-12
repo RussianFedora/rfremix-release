@@ -1,4 +1,4 @@
-%define release_name Rawhide
+%define release_name Beefy Miracle
 %define dist_version 17
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	17
-Release:	0.2.R
+Release:	0.8.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -34,6 +34,7 @@ Summary:        Rawhide repo definitions
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Provides:	fedora-release-rawhide = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-rawhide
+Obsoletes:      rfremix-release-rawhide < %{epoch}:%{version}-%{release}
 
 %description rawhide
 This package provides the rawhide repo definitions.
@@ -57,6 +58,15 @@ echo >> $RPM_BUILD_ROOT/etc/issue
 ln -s rfremix-release $RPM_BUILD_ROOT/etc/redhat-release
 ln -s rfremix-release $RPM_BUILD_ROOT/etc/system-release
 
+cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
+NAME=Fedora
+VERSION="%{version} (%{release_name})"
+ID=fedora
+VERSION_ID=%{version}
+PRETTY_NAME="Fedora %{version} (%{release_name})"
+ANSI_COLOR=0;34
+EOF
+
 install -d -m 755 $RPM_BUILD_ROOT/etc/pki/rpm-gpg
 
 install -m 644 RPM-GPG-KEY* $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
@@ -69,7 +79,7 @@ for arch in i386 x86_64
   ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora-$arch
 done
 ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora
-for arch in arm ppc ppc64 s390 s390x sparc sparc64
+for arch in arm armhfp arm64 ppc ppc64 s390 s390x sparc sparc64
   do
   ln -s RPM-GPG-KEY-fedora-%{dist_version}-secondary RPM-GPG-KEY-fedora-$arch
 done
@@ -93,14 +103,13 @@ cat >> $RPM_BUILD_ROOT/etc/rpm/macros.dist << EOF
 %%fc%{dist_version}		1
 EOF
 
-
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
 %doc GPL 
+%config %attr(0644,root,root) /etc/os-release
 %config %attr(0644,root,root) /etc/fedora-release
 %config %attr(0644,root,root) /etc/rfremix-release
 /etc/redhat-release
@@ -122,6 +131,17 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Feb 12 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 17-0.8.R
+- enable updates-testing repo while branched
+- add /etc/os-release file for bz#733117
+- enable fedora and fedora-updates repos
+- Obsoletes old fedora-release-rawhide
+- disable rawhide
+- disable 7 day cache of metadata in fedora repo
+- Set the release name to Beefy Miracle
+- install the fedora 17 gpg keys
+- symlink the secondary arch key for the armhfp and arm64 basearch
+
 * Thu Dec  8 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 17-0.2.R
 - update for rawhide
 
