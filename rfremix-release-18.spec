@@ -1,12 +1,12 @@
 %define release_name Rawhide
-%define dist_version 17
+%define dist_version 18
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
-%define rfremix_version 17
+%define rfremix_version 18
 
 Summary:	RFRemix release files
 Name:		rfremix-release
-Version:	17
+Version:	18
 Release:	0.2.R
 Epoch:		2
 License:	GPLv2
@@ -57,6 +57,15 @@ echo >> $RPM_BUILD_ROOT/etc/issue
 ln -s rfremix-release $RPM_BUILD_ROOT/etc/redhat-release
 ln -s rfremix-release $RPM_BUILD_ROOT/etc/system-release
 
+cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
+NAME=Fedora
+VERSION="%{version} (%{release_name})"
+ID=fedora
+VERSION_ID=%{version}
+PRETTY_NAME="Fedora %{version} (%{release_name})"
+ANSI_COLOR=0;34
+EOF
+
 install -d -m 755 $RPM_BUILD_ROOT/etc/pki/rpm-gpg
 
 install -m 644 RPM-GPG-KEY* $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
@@ -101,6 +110,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root,-)
 %doc GPL 
+%config %attr(0644,root,root) /etc/os-release
 %config %attr(0644,root,root) /etc/fedora-release
 %config %attr(0644,root,root) /etc/rfremix-release
 /etc/redhat-release
@@ -122,6 +132,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Feb 12 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-0.2.R
+- next upstream release
+
 * Thu Dec  8 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 17-0.2.R
 - update for rawhide
 
