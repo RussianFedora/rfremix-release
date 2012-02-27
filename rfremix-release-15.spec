@@ -1,18 +1,18 @@
-%define release_name Verne
-%define dist_version 16
+%define release_name Lovelock
+%define dist_version 15
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
-%define rfremix_version 16
+%define rfremix_version 15.1
 
 Summary:	Russian Fedora Remix release files
 Name:		rfremix-release
-Version:	16
-Release:	0.9.R
+Version:	15
+Release:	2.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
-Source:		http://download.rfremix.ru/storage/%{name}/%{name}-%{version}.tar.bz2
+Source:		http://koji.russianfedora.ru/storage/%{name}/%{name}-15.tar.bz2
 Source1:	rfremix-install-media-dvd.repo
 
 Obsoletes:	redhat-release
@@ -40,16 +40,16 @@ This package provides the rawhide repo definitions.
 
 
 %prep
-%setup -q
+%setup -q -n %{name}-15
 
 %build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc
-echo "Fedora release %{version} (%{release_name})" > $RPM_BUILD_ROOT/etc/fedora-release
+echo "Fedora release %{dist_version} (%{release_name})" > $RPM_BUILD_ROOT/etc/fedora-release
 echo "RFRemix release %{rfremix_version} (%{release_name})" > $RPM_BUILD_ROOT/etc/rfremix-release
-echo "cpe:/o:fedoraproject:fedora:%{version}" > $RPM_BUILD_ROOT/etc/system-release-cpe
+echo "cpe:/o:fedoraproject:fedora:%{dist_version}" > $RPM_BUILD_ROOT/etc/system-release-cpe
 cp -p $RPM_BUILD_ROOT/etc/rfremix-release $RPM_BUILD_ROOT/etc/issue
 echo "Kernel \r on an \m (\l)" >> $RPM_BUILD_ROOT/etc/issue
 cp -p $RPM_BUILD_ROOT/etc/issue $RPM_BUILD_ROOT/etc/issue.net
@@ -64,15 +64,11 @@ install -m 644 RPM-GPG-KEY* $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
 # Install all the keys, link the primary keys to primary arch files
 # and to compat generic location
 pushd $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
-for arch in i386 x86_64
+for arch in i386 x86_64 ppc ppc64
   do
   ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora-$arch
 done
 ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora
-for arch in arm ppc ppc64 s390 s390x sparc sparc64
-  do
-  ln -s RPM-GPG-KEY-fedora-%{dist_version}-secondary RPM-GPG-KEY-fedora-$arch
-done
 popd
 
 install -d -m 755 $RPM_BUILD_ROOT/etc/yum.repos.d
@@ -122,8 +118,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Fri Sep 16 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 16-0.9.R
-- update for RFRemix 16-Beta
+* Thu Jul 28 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15-2.R
+- fix version in release files and package version
+- update to 15.1
 
 * Fri May 13 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15-1.R
 - enable updates
