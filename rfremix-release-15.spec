@@ -7,7 +7,7 @@
 Summary:	Russian Fedora Remix release files
 Name:		rfremix-release
 Version:	15
-Release:	2.R
+Release:	3.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -85,7 +85,7 @@ cat >> $RPM_BUILD_ROOT/etc/rpm/macros.dist << EOF
 # dist macros.
 
 %%fedora		%{dist_version}
-%%dist		.fc%{dist_version}
+%%dist		.fc%{dist_version}.R
 %%fc%{dist_version}		1
 EOF
 
@@ -118,6 +118,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Feb 27 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 15-3.R
+- %%dist is now with .R
+
 * Thu Jul 28 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 15-2.R
 - fix version in release files and package version
 - update to 15.1
