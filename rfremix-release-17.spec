@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	17
-Release:	0.8.R
+Release:	0.8.1.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -99,7 +99,7 @@ cat >> $RPM_BUILD_ROOT/etc/rpm/macros.dist << EOF
 # dist macros.
 
 %%fedora		%{dist_version}
-%%dist		.fc%{dist_version}
+%%dist		.fc%{dist_version}.R
 %%fc%{dist_version}		1
 EOF
 
@@ -131,6 +131,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Feb 12 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 17-0.8.1.R
+- %%dist is now with .R
+
 * Sun Feb 12 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 17-0.8.R
 - enable updates-testing repo while branched
 - add /etc/os-release file for bz#733117
