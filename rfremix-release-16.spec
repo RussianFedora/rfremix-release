@@ -2,12 +2,12 @@
 %define dist_version 16
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
-%define rfremix_version 16
+%define rfremix_version 16.1
 
 Summary:	Russian Fedora Remix release files
 Name:		rfremix-release
 Version:	16
-Release:	1.R
+Release:	2.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -91,7 +91,7 @@ cat >> $RPM_BUILD_ROOT/etc/rpm/macros.dist << EOF
 # dist macros.
 
 %%fedora		%{dist_version}
-%%dist		.fc%{dist_version}
+%%dist		.fc%{dist_version}.R
 %%fc%{dist_version}		1
 EOF
 
@@ -124,6 +124,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Feb 27 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 16-2.R
+- %%dist is now with .R
+- update for RFRemix 16.1
 
 * Wed Oct 26 2011 Arkady L. Shane <ashejn@yandex-team.ru> - 16-1.R
 - enable updates

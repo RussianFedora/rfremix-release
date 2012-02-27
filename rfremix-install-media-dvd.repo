@@ -1,6 +1,7 @@
 [rfremix-install-media-dvd]
 name=RFRemix Install Media DVD - $basearch
 failovermethod=priority
+baseurl=file:///media/RFRemix%2016.1%20$basearch%20DVD/
 baseurl=file:///media/RFRemix%2016%20$basearch%20DVD/
 enabled=0
 gpgcheck=1
