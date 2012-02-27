@@ -12,7 +12,7 @@ Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
-Source:		http://koji.russianfedora.ru/storage/%{name}/%{name}-15.tar.bz2
+Source:		%{name}-15.tar.bz2
 Source1:	rfremix-install-media-dvd.repo
 
 Obsoletes:	redhat-release
