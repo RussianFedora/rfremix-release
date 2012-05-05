@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	17
-Release:	0.8.1.R
+Release:	1.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -42,6 +42,7 @@ This package provides the rawhide repo definitions.
 
 %prep
 %setup -q
+sed -i 's|@@VERSION@@|%{dist_version}|g' Fedora-Legal-README.txt
 
 %build
 
@@ -108,7 +109,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc GPL 
+%doc GPL Fedora-Legal-README.txt
 %config %attr(0644,root,root) /etc/os-release
 %config %attr(0644,root,root) /etc/fedora-release
 %config %attr(0644,root,root) /etc/rfremix-release
@@ -131,6 +132,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sat May  5 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 17-1.R
+- disable updates-testing repo
+- enable 7 day metadata cache for fedora repo
+
 * Sun Feb 12 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 17-0.8.1.R
 - %%dist is now with .R
 
