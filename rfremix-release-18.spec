@@ -42,7 +42,7 @@ This package provides the rawhide repo definitions.
 
 %prep
 %setup -q
-cp %{SOURCE1} .
+cp %{SOURCE2} .
 sed -i 's|@@VERSION@@|%{dist_version}|g' Fedora-Legal-README.txt
 
 %build
