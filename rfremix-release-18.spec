@@ -7,13 +7,14 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	18
-Release:	0.3.R
+Release:	0.4.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
-Source:		%{name}/%{name}-%{version}.tar.bz2
+Source:		%{name}-%{version}.tar.bz2
 Source1:	rfremix-install-media-dvd.repo
+Source2:	Fedora-Legal-README.txt
 
 Obsoletes:	redhat-release
 Provides:	redhat-release
@@ -30,8 +31,8 @@ RFRemix release files such as yum configs and
 various /etc/ files that define the release.
 
 %package rawhide
-Summary:        Rawhide repo definitions
-Requires:       rfremix-release = %{epoch}:%{version}-%{release}
+Summary:	Rawhide repo definitions
+Requires:	rfremix-release = %{epoch}:%{version}-%{release}
 Provides:	fedora-release-rawhide = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-rawhide
 
@@ -41,6 +42,8 @@ This package provides the rawhide repo definitions.
 
 %prep
 %setup -q
+cp %{SOURCE1} .
+sed -i 's|@@VERSION@@|%{dist_version}|g' Fedora-Legal-README.txt
 
 %build
 
@@ -63,7 +66,8 @@ VERSION="%{version} (%{release_name})"
 ID=fedora
 VERSION_ID=%{version}
 PRETTY_NAME="Fedora %{version} (%{release_name})"
-ANSI_COLOR=0;34
+ANSI_COLOR="0;34"
+CPE_NAME="cpe:/o:fedoraproject:fedora:%{version}"
 EOF
 
 install -d -m 755 $RPM_BUILD_ROOT/etc/pki/rpm-gpg
@@ -102,14 +106,12 @@ cat >> $RPM_BUILD_ROOT/etc/rpm/macros.dist << EOF
 %%fc%{dist_version}		1
 EOF
 
-
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc GPL 
+%doc GPL Fedora-Legal-README.txt
 %config %attr(0644,root,root) /etc/os-release
 %config %attr(0644,root,root) /etc/fedora-release
 %config %attr(0644,root,root) /etc/rfremix-release
@@ -132,6 +134,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Mar 20 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-0.4.R
+- added Fedora-Legal-README.txt
+- prepare media repo for Alpha and Beta
+
 * Mon Feb 27 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-0.3.R
 - %%dist is now with .R
 
