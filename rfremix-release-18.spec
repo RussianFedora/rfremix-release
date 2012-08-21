@@ -1,4 +1,4 @@
-%define release_name Rawhide
+%define release_name Spherical Cow
 %define dist_version 18
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
@@ -7,14 +7,13 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	18
-Release:	0.4.R
+Release:	0.7.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
 Source:		%{name}-%{version}.tar.bz2
 Source1:	rfremix-install-media-dvd.repo
-Source2:	Fedora-Legal-README.txt
 
 Obsoletes:	redhat-release
 Provides:	redhat-release
@@ -42,7 +41,6 @@ This package provides the rawhide repo definitions.
 
 %prep
 %setup -q
-cp %{SOURCE2} .
 sed -i 's|@@VERSION@@|%{dist_version}|g' Fedora-Legal-README.txt
 
 %build
@@ -82,7 +80,7 @@ for arch in i386 x86_64
   ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora-$arch
 done
 ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora
-for arch in arm ppc ppc64 s390 s390x sparc sparc64
+for arch in arm armhfp arm64 ppc ppc64 s390 s390x sparc sparc64
   do
   ln -s RPM-GPG-KEY-fedora-%{dist_version}-secondary RPM-GPG-KEY-fedora-$arch
 done
@@ -134,6 +132,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Aug 21 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-0.7.R
+- merge with upstream
+- place F/RFR 18 name
+
 * Wed Mar 20 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-0.4.R
 - added Fedora-Legal-README.txt
 - prepare media repo for Alpha and Beta
