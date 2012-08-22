@@ -1,5 +1,5 @@
 %define release_name Rawhide
-%define dist_version 18
+%define dist_version 19
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
 %define rfremix_version 19
@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	19
-Release:	0.2.R
+Release:	0.2.1.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -132,6 +132,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Aug 22 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 19-0.2.1.R
+- real fix
+
 * Wed Aug 22 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 19-0.2.R
 - fix rfremix version
 
