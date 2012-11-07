@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	18
-Release:	0.7.R
+Release:	0.8.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -19,9 +19,11 @@ Obsoletes:	redhat-release
 Provides:	redhat-release
 Provides:	system-release = %{epoch}:%{version}-%{release}
 Provides:	fedora-release = %{epoch}:%{version}-%{release}
+Provides:	generic-release = %{epoch}:%{version}-%{release}
 Requires:	rfremix-config
 Obsoletes:	russianfedora-repos < %{version}
 Obsoletes:	fedora-release
+Obsoletes:	generic-release
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 
@@ -132,6 +134,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov  7 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-0.8.R
+- P: and O: generic-release
+
 * Tue Aug 21 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-0.7.R
 - merge with upstream
 - place F/RFR 18 name
