@@ -61,11 +61,11 @@ ln -s rfremix-release $RPM_BUILD_ROOT/etc/redhat-release
 ln -s rfremix-release $RPM_BUILD_ROOT/etc/system-release
 
 cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
-NAME=Fedora
+NAME=RFRemix
 VERSION="%{version} (%{release_name})"
 ID=fedora
 VERSION_ID=%{version}
-PRETTY_NAME="Fedora %{version} (%{release_name})"
+PRETTY_NAME="RFRemix %{version} (%{release_name})"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{version}"
 EOF
