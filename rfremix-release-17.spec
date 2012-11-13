@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	17
-Release:	2.R
+Release:	3.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -19,9 +19,11 @@ Obsoletes:	redhat-release
 Provides:	redhat-release
 Provides:	system-release = %{epoch}:%{version}-%{release}
 Provides:	fedora-release = %{epoch}:%{version}-%{release}
+Provides:       generic-release = %{epoch}:%{version}-%{release}
 Requires:	rfremix-config
 Obsoletes:	russianfedora-repos < %{version}
 Obsoletes:	fedora-release
+Obsoletes:      generic-release
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 
@@ -132,6 +134,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Nov 13 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 17-3.R
+- P: and O: generic release
+
 * Tue Nov 13 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 17-2.R
 - update for RFRemix 17.1
 - RFRemixify os-release
