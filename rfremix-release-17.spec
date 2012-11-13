@@ -2,12 +2,12 @@
 %define dist_version 17
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
-%define rfremix_version 17
+%define rfremix_version 17.1
 
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	17
-Release:	1.R
+Release:	2.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -60,11 +60,11 @@ ln -s rfremix-release $RPM_BUILD_ROOT/etc/redhat-release
 ln -s rfremix-release $RPM_BUILD_ROOT/etc/system-release
 
 cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
-NAME=Fedora
-VERSION="%{version} (%{release_name})"
+NAME=RFRemix
+VERSION="%{rfremix_version} (%{release_name})"
 ID=fedora
-VERSION_ID=%{version}
-PRETTY_NAME="Fedora %{version} (%{release_name})"
+VERSION_ID=%{rfremix_version}
+PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 ANSI_COLOR=0;34
 EOF
 
@@ -132,6 +132,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Nov 13 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 17-2.R
+- update for RFRemix 17.1
+- RFRemixify os-release
+
 * Sat May  5 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 17-1.R
 - disable updates-testing repo
 - enable 7 day metadata cache for fedora repo
