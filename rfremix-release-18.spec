@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	18
-Release:	0.8.R
+Release:	0.8.1.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -62,10 +62,10 @@ ln -s rfremix-release $RPM_BUILD_ROOT/etc/system-release
 
 cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
 NAME=RFRemix
-VERSION="%{version} (%{release_name})"
+VERSION="%{rfremix_version} (%{release_name})"
 ID=fedora
-VERSION_ID=%{version}
-PRETTY_NAME="RFRemix %{version} (%{release_name})"
+VERSION_ID=%{rfremix_version}
+PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{version}"
 EOF
@@ -134,6 +134,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Nov 13 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-0.8.1.R
+- RFRemix in os-release
+
 * Wed Nov  7 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-0.8.R
 - P: and O: generic-release
 
