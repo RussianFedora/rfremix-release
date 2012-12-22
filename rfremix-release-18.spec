@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	18
-Release:	0.8.1.R
+Release:	1.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -134,6 +134,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Nov 13 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-1.R
+- disable updates-testing
+- add fedora 19 gpg keys
+
 * Tue Nov 13 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-0.8.1.R
 - RFRemix in os-release
 
