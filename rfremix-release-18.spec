@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	18
-Release:	1.R
+Release:	2.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -57,15 +57,15 @@ cp -p $RPM_BUILD_ROOT/etc/rfremix-release $RPM_BUILD_ROOT/etc/issue
 echo "Kernel \r on an \m (\l)" >> $RPM_BUILD_ROOT/etc/issue
 cp -p $RPM_BUILD_ROOT/etc/issue $RPM_BUILD_ROOT/etc/issue.net
 echo >> $RPM_BUILD_ROOT/etc/issue
-ln -s rfremix-release $RPM_BUILD_ROOT/etc/redhat-release
-ln -s rfremix-release $RPM_BUILD_ROOT/etc/system-release
+ln -s fedora-release $RPM_BUILD_ROOT/etc/redhat-release
+ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 
 cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
-NAME=RFRemix
-VERSION="%{rfremix_version} (%{release_name})"
+NAME=Fedora
+VERSION="%{version} (%{release_name})"
 ID=fedora
-VERSION_ID=%{rfremix_version}
-PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
+VERSION_ID=%{version}
+PRETTY_NAME="Fedora %{version} (%{release_name})"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{version}"
 EOF
@@ -134,6 +134,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jan  4 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 18-2.R
+- back to Fedora in os Release (rfr#1147)
+- also link system-release and redhat-release to fedora-release
+
 * Tue Nov 13 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 18-1.R
 - disable updates-testing
 - add fedora 19 gpg keys
