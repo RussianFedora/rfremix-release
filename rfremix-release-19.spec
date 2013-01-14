@@ -1,4 +1,4 @@
-%define release_name Rawhide
+%define release_name Schrödinger's Cat
 %define dist_version 19
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	19
-Release:	0.2.1.R
+Release:	0.2.2.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -19,9 +19,11 @@ Obsoletes:	redhat-release
 Provides:	redhat-release
 Provides:	system-release = %{epoch}:%{version}-%{release}
 Provides:	fedora-release = %{epoch}:%{version}-%{release}
+Provides:	generic-release = %{epoch}:%{version}-%{release}
 Requires:	rfremix-config
 Obsoletes:	russianfedora-repos < %{version}
 Obsoletes:	fedora-release
+Obsoletes:	generic-release
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 
@@ -55,15 +57,16 @@ cp -p $RPM_BUILD_ROOT/etc/rfremix-release $RPM_BUILD_ROOT/etc/issue
 echo "Kernel \r on an \m (\l)" >> $RPM_BUILD_ROOT/etc/issue
 cp -p $RPM_BUILD_ROOT/etc/issue $RPM_BUILD_ROOT/etc/issue.net
 echo >> $RPM_BUILD_ROOT/etc/issue
-ln -s rfremix-release $RPM_BUILD_ROOT/etc/redhat-release
-ln -s rfremix-release $RPM_BUILD_ROOT/etc/system-release
+ln -s fedora-release $RPM_BUILD_ROOT/etc/redhat-release
+ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 
 cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
-NAME=Fedora
-VERSION="%{version} (%{release_name})"
-ID=fedora
-VERSION_ID=%{version}
-PRETTY_NAME="Fedora %{version} (%{release_name})"
+NAME=RFRemix
+VERSION="%{rfremix_version} (%{release_name})"
+ID=rfremix
+ID_LIKE=fedora
+VERSION_ID=%{rfremix_version}
+PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{version}"
 EOF
@@ -132,6 +135,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Jan 14 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 19-0.2.2.R
+- sync with rfremix-release 18
+
 * Wed Aug 22 2012 Arkady L. Shane <ashejn@yandex-team.ru> - 19-0.2.1.R
 - real fix
 
