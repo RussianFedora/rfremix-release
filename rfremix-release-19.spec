@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	19
-Release:	0.2.2.R
+Release:	0.4.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -125,7 +125,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) /etc/yum.repos.d/rfremix-install-media-dvd.repo
 %config(noreplace) %attr(0644,root,root) /etc/issue
 %config(noreplace) %attr(0644,root,root) /etc/issue.net
-%config %attr(0644,root,root) /etc/rpm/macros.dist
+%attr(0644,root,root) /etc/rpm/macros.dist
 %dir /etc/pki/rpm-gpg
 /etc/pki/rpm-gpg/*
 
@@ -135,6 +135,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Mar 13 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 19-0.4.R
+- branch for rfremix 19
+
 * Mon Jan 14 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 19-0.2.2.R
 - sync with rfremix-release 18
 
