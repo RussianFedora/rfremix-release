@@ -1,4 +1,4 @@
-%define release_name Schrödinger's Cat
+%define release_name Schrödinger’s Cat
 %define dist_version 19
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	19
-Release:	0.4.R
+Release:	0.5.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -135,6 +135,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Mar 19 2013 Dennis Gilmore <dennis@ausil.us> - 19-0.5
+- apply patch from pjones removing shell quote character
+
 * Wed Mar 13 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 19-0.4.R
 - branch for rfremix 19
 
