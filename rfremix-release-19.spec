@@ -61,7 +61,7 @@ ln -s fedora-release $RPM_BUILD_ROOT/etc/redhat-release
 ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 
 cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
-NAME=RFRemix
+NAME=Fedora
 VERSION="%{rfremix_version} (%{release_name})"
 ID=rfremix
 ID_LIKE=fedora
