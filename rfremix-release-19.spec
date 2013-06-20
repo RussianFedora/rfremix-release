@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	19
-Release:	0.5.R
+Release:	1.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -83,7 +83,7 @@ for arch in i386 x86_64
   ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora-$arch
 done
 ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora
-for arch in arm armhfp arm64 ppc ppc64 s390 s390x sparc sparc64
+for arch in arm armhfp aarch64 ppc ppc64 s390 s390x
   do
   ln -s RPM-GPG-KEY-fedora-%{dist_version}-secondary RPM-GPG-KEY-fedora-$arch
 done
@@ -135,6 +135,13 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jun 20 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19-1.R
+- disable updates-testing
+- add f20 certs
+- drop cert links for sparc
+- set fedora repo metadata to 7 day expiry
+- set NAME=Fedora in os-release
+
 * Tue Mar 19 2013 Dennis Gilmore <dennis@ausil.us> - 19-0.5
 - apply patch from pjones removing shell quote character
 
