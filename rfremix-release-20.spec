@@ -1,13 +1,14 @@
-%define release_name Rawhide
+%define release_name Heisenbug
 %define dist_version 20
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
 %define rfremix_version 20
+%define bug_version 20
 
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	20
-Release:	0.1.R
+Release:	0.6.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -28,8 +29,8 @@ BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 
 %description
-RFRemix release files such as yum configs and
-various /etc/ files that define the release.
+RFRemix release files such as yum configs and various /etc/ files that
+define the release.
 
 %package rawhide
 Summary:	Rawhide repo definitions
@@ -69,6 +70,10 @@ VERSION_ID=%{rfremix_version}
 PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{version}"
+REDHAT_BUGZILLA_PRODUCT="Fedora"
+REDHAT_BUGZILLA_PRODUCT_VERSION=%{bug_version}
+REDHAT_SUPPORT_PRODUCT="Fedora"
+REDHAT_SUPPORT_PRODUCT_VERSION=%{bug_version}
 EOF
 
 install -d -m 755 $RPM_BUILD_ROOT/etc/pki/rpm-gpg
@@ -78,14 +83,14 @@ install -m 644 RPM-GPG-KEY* $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
 # Install all the keys, link the primary keys to primary arch files
 # and to compat generic location
 pushd $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
-for arch in i386 x86_64
+for arch in i386 x86_64 armhfp
   do
-  ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora-$arch
+  ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora-%{dist_version}-$arch
 done
-ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora
-for arch in arm armhfp aarch64 ppc ppc64 s390 s390x
+ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-%{dist_version}-fedora
+for arch in aarch64 ppc ppc64 s390 s390x
   do
-  ln -s RPM-GPG-KEY-fedora-%{dist_version}-secondary RPM-GPG-KEY-fedora-$arch
+  ln -s RPM-GPG-KEY-fedora-%{dist_version}-secondary RPM-GPG-KEY-fedora-%{dist_version}-$arch
 done
 popd
 
@@ -125,7 +130,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) /etc/yum.repos.d/rfremix-install-media-dvd.repo
 %config(noreplace) %attr(0644,root,root) /etc/issue
 %config(noreplace) %attr(0644,root,root) /etc/issue.net
-%attr(0644,root,root) /etc/rpm/macros.dist
+%config %attr(0644,root,root) /etc/rpm/macros.dist
 %dir /etc/pki/rpm-gpg
 /etc/pki/rpm-gpg/*
 
@@ -135,6 +140,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Sep  4 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 20-0.6.R
+- sync with upstream
+
 * Wed Mar 13 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 20-0.1.R
 - rebase on RFRemix 20
 
