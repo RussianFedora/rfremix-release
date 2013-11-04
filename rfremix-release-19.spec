@@ -2,12 +2,12 @@
 %define dist_version 19
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
-%define rfremix_version 19
+%define rfremix_version 19.1
 
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	19
-Release:	1.R
+Release:	2.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -135,6 +135,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Nov  4 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19.1-1.R
+- update for 19.1
+
 * Thu Jun 20 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19-1.R
 - disable updates-testing
 - add f20 certs
