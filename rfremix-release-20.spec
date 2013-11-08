@@ -14,7 +14,6 @@ License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
 Source:		%{name}-%{version}.tar.bz2
-Source1:	rfremix-install-media-dvd.repo
 
 Obsoletes:	redhat-release
 Provides:	redhat-release
@@ -99,9 +98,6 @@ for file in fedora*repo ; do
   install -m 644 $file $RPM_BUILD_ROOT/etc/yum.repos.d
 done
 
-install -m 644 %{SOURCE1} \
-	$RPM_BUILD_ROOT/etc/yum.repos.d
-
 # Set up the dist tag macros
 install -d -m 755 $RPM_BUILD_ROOT/etc/rpm
 cat >> $RPM_BUILD_ROOT/etc/rpm/macros.dist << EOF
@@ -127,7 +123,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/yum.repos.d
 %config(noreplace) /etc/yum.repos.d/fedora.repo
 %config(noreplace) /etc/yum.repos.d/fedora-updates*.repo
-%config(noreplace) /etc/yum.repos.d/rfremix-install-media-dvd.repo
 %config(noreplace) %attr(0644,root,root) /etc/issue
 %config(noreplace) %attr(0644,root,root) /etc/issue.net
 %config %attr(0644,root,root) /etc/rpm/macros.dist
