@@ -7,13 +7,12 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	19
-Release:	2.R
+Release:	3.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
-Source:		%{name}-%{version}.tar.bz2
-Source1:	rfremix-install-media-dvd.repo
+Source:		%{name}-%{version}.tar.xz
 
 Obsoletes:	redhat-release
 Provides:	redhat-release
@@ -24,7 +23,9 @@ Requires:	rfremix-config
 Obsoletes:	russianfedora-repos < %{version}
 Obsoletes:	fedora-release
 Obsoletes:	generic-release
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Obsoletes:      fedora-release-rawhide < %{version}-1
+Obsoletes:      rfremix-release-rawhide < %{version}-1
+Obsoletes:      generic-release-rawhide < %{version}-1
 BuildArch:	noarch
 
 %description
@@ -80,12 +81,12 @@ install -m 644 RPM-GPG-KEY* $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
 pushd $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
 for arch in i386 x86_64
   do
-  ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora-$arch
+  ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora-%{dist_version}-$arch
 done
-ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora
+ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-%{dist_version}-fedora
 for arch in arm armhfp aarch64 ppc ppc64 s390 s390x
   do
-  ln -s RPM-GPG-KEY-fedora-%{dist_version}-secondary RPM-GPG-KEY-fedora-$arch
+  ln -s RPM-GPG-KEY-fedora-%{dist_version}-secondary RPM-GPG-KEY-fedora-%{dist_version}-$arch
 done
 popd
 
@@ -93,9 +94,6 @@ install -d -m 755 $RPM_BUILD_ROOT/etc/yum.repos.d
 for file in fedora*repo ; do
   install -m 644 $file $RPM_BUILD_ROOT/etc/yum.repos.d
 done
-
-install -m 644 %{SOURCE1} \
-	$RPM_BUILD_ROOT/etc/yum.repos.d
 
 # Set up the dist tag macros
 install -d -m 755 $RPM_BUILD_ROOT/etc/rpm
@@ -122,7 +120,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/yum.repos.d
 %config(noreplace) /etc/yum.repos.d/fedora.repo
 %config(noreplace) /etc/yum.repos.d/fedora-updates*.repo
-%config(noreplace) /etc/yum.repos.d/rfremix-install-media-dvd.repo
 %config(noreplace) %attr(0644,root,root) /etc/issue
 %config(noreplace) %attr(0644,root,root) /etc/issue.net
 %attr(0644,root,root) /etc/rpm/macros.dist
@@ -135,7 +132,14 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
-* Mon Nov  4 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19.1-1.R
+* Fri Nov  8 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19-3.R
+- update f20 secondary gpg key, initial was mad incorrectly
+- only obsolete fedora-release-rawhide less than release 1
+- use version when setting up gpg check so fedup can pull in next
+  release gpg key
+- drop media repo file
+
+* Mon Nov  4 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19-2.R
 - update for 19.1
 
 * Thu Jun 20 2013 Arkady L. Shane <ashejn@russianfedora.ru> - 19-1.R
