@@ -8,7 +8,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	20
-Release:	0.6.R
+Release:	0.7.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
@@ -24,6 +24,9 @@ Requires:	rfremix-config
 Obsoletes:	russianfedora-repos < %{version}
 Obsoletes:	fedora-release
 Obsoletes:	generic-release
+Obsoletes:      fedora-release-rawhide < %{version}-%{release}
+Obsoletes:      rfremix-release-rawhide < %{version}-%{release}
+Obsoletes:      generic-release-rawhide < %{version}-%{release}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 
@@ -135,6 +138,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Nov  7 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 20-0.7.R
+- drop dvd repo file
+- added some new Obsoletes for rawhide
+
 * Wed Sep  4 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 20-0.6.R
 - sync with upstream
 
