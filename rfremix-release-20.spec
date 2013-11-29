@@ -5,30 +5,29 @@
 %define rfremix_version 20
 %define bug_version 20
 
-Summary:	RFRemix release files
-Name:		rfremix-release
-Version:	20
-Release:	0.7.R
-Epoch:		2
-License:	GPLv2
-Group:		System Environment/Base
-URL:		http://fedoraproject.org
-Source:		%{name}-%{version}.tar.bz2
+Summary:        RFRemix release files
+Name:           rfremix-release
+Version:        20
+Release:        1.R
+Epoch:          2
+License:        GPLv2
+Group:          System Environment/Base
+URL:            http://russianfedora.pro
+Source:         %{name}-%{version}.tar.bz2
 
-Obsoletes:	redhat-release
-Provides:	redhat-release
-Provides:	system-release = %{epoch}:%{version}-%{release}
-Provides:	fedora-release = %{epoch}:%{version}-%{release}
-Provides:	generic-release = %{epoch}:%{version}-%{release}
-Requires:	rfremix-config
-Obsoletes:	russianfedora-repos < %{version}
-Obsoletes:	fedora-release
-Obsoletes:	generic-release
+Obsoletes:      redhat-release
+Provides:       redhat-release
+Provides:       system-release = %{epoch}:%{version}-%{release}
+Provides:       fedora-release = %{epoch}:%{version}-%{release}
+Provides:       generic-release = %{epoch}:%{version}-%{release}
+Requires:       rfremix-config
+Obsoletes:      russianfedora-repos < %{version}
+Obsoletes:      fedora-release
+Obsoletes:      generic-release
 Obsoletes:      fedora-release-rawhide < %{version}-%{release}
 Obsoletes:      rfremix-release-rawhide < %{version}-%{release}
 Obsoletes:      generic-release-rawhide < %{version}-%{release}
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-BuildArch:	noarch
+BuildArch:       noarch
 
 %description
 RFRemix release files such as yum configs and various /etc/ files that
@@ -72,28 +71,34 @@ VERSION_ID=%{rfremix_version}
 PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{version}"
+HOME_URL="https://fedoraproject.org/"
+BUG_REPORT_URL="https://bugzilla.redhat.com/"
 REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=%{bug_version}
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=%{bug_version}
 EOF
 
+# Install the keys
 install -d -m 755 $RPM_BUILD_ROOT/etc/pki/rpm-gpg
-
 install -m 644 RPM-GPG-KEY* $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
 
-# Install all the keys, link the primary keys to primary arch files
-# and to compat generic location
+# Link the primary/secondary keys to arch files, according to archmap.
+# Ex: if there's a key named RPM-GPG-KEY-fedora-19-primary, and archmap
+#     says "fedora-19-primary: i386 x86_64",
+#     RPM-GPG-KEY-fedora-19-{i386,x86_64} will be symlinked to that key.
 pushd $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
-for arch in i386 x86_64 armhfp
-  do
-  ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora-%{dist_version}-$arch
+for keyfile in RPM-GPG-KEY*; do
+    key=${keyfile#RPM-GPG-KEY-} # e.g. 'fedora-20-primary'
+    arches=$(sed -ne "s/^${key}://p" $RPM_BUILD_DIR/%{name}-%{version}/archmap) \
+        || echo "WARNING: no archmap entry for $key"
+    for arch in $arches; do
+        # replace last part with $arch (fedora-20-primary -> fedora-20-$arch)
+        ln -s $keyfile ${keyfile%%-*}-$arch # NOTE: RPM replaces %% with %
+    done
 done
+# and add symlink for compat generic location
 ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-%{dist_version}-fedora
-for arch in aarch64 ppc ppc64 s390 s390x
-  do
-  ln -s RPM-GPG-KEY-fedora-%{dist_version}-secondary RPM-GPG-KEY-fedora-%{dist_version}-$arch
-done
 popd
 
 install -d -m 755 $RPM_BUILD_ROOT/etc/yum.repos.d
@@ -106,9 +111,9 @@ install -d -m 755 $RPM_BUILD_ROOT/etc/rpm
 cat >> $RPM_BUILD_ROOT/etc/rpm/macros.dist << EOF
 # dist macros.
 
-%%fedora		%{dist_version}
-%%dist		.fc%{dist_version}.R
-%%fc%{dist_version}		1
+%%fedora                %{dist_version}
+%%dist                .fc%{dist_version}.R
+%%fc%{dist_version}                1
 EOF
 
 %clean
@@ -138,6 +143,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Nov 29 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 20-1.R
+- enabled metadata caching for fedora
+- disable updates-testing
+
 * Fri Nov  7 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 20-0.7.R
 - drop dvd repo file
 - added some new Obsoletes for rawhide
