@@ -1,31 +1,29 @@
 %define release_name Rawhide
 %define dist_version 21
 # validate at 20101017. only increase rfremix_version
-# and in rfremix-install-media-dvd.repo too
 %define rfremix_version 21
 %define bug_version Rawhide
 
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	21
-Release:	0.1.R
+Release:	0.5.R
 Epoch:		2
 License:	GPLv2
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
 Source:		%{name}-%{version}.tar.bz2
-Source1:	rfremix-install-media-dvd.repo
 
 Obsoletes:	redhat-release
 Provides:	redhat-release
 Provides:	system-release = %{epoch}:%{version}-%{release}
 Provides:	fedora-release = %{epoch}:%{version}-%{release}
 Provides:	generic-release = %{epoch}:%{version}-%{release}
+Provides:	system-release(%{version})
 Requires:	rfremix-config
 Obsoletes:	russianfedora-repos < %{version}
 Obsoletes:	fedora-release
 Obsoletes:	generic-release
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:	noarch
 
 %description
@@ -35,7 +33,7 @@ define the release.
 %package rawhide
 Summary:	Rawhide repo definitions
 Requires:	rfremix-release = %{epoch}:%{version}-%{release}
-Provides:	fedora-release-rawhide = %{epoch}:%{version}-%{release}
+Provides:	fedora-reddlease-rawhide = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-rawhide
 
 %description rawhide
@@ -70,28 +68,34 @@ VERSION_ID=%{rfremix_version}
 PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{version}"
+HOME_URL="https://fedoraproject.org/"
+BUG_REPORT_URL="https://bugzilla.redhat.com/"
 REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=%{bug_version}
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=%{bug_version}
 EOF
 
+# Install the keys
 install -d -m 755 $RPM_BUILD_ROOT/etc/pki/rpm-gpg
-
 install -m 644 RPM-GPG-KEY* $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
 
-# Install all the keys, link the primary keys to primary arch files
-# and to compat generic location
+# Link the primary/secondary keys to arch files, according to archmap.
+# Ex: if there's a key named RPM-GPG-KEY-fedora-19-primary, and archmap
+#     says "fedora-19-primary: i386 x86_64",
+#     RPM-GPG-KEY-fedora-19-{i386,x86_64} will be symlinked to that key.
 pushd $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
-for arch in i386 x86_64 armhfp
-  do
-  ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-fedora-%{dist_version}-$arch
+for keyfile in RPM-GPG-KEY*; do
+    key=${keyfile#RPM-GPG-KEY-} # e.g. 'fedora-20-primary'
+    arches=$(sed -ne "s/^${key}://p" $RPM_BUILD_DIR/%{name}-%{version}/archmap) \
+        || echo "WARNING: no archmap entry for $key"
+    for arch in $arches; do
+        # replace last part with $arch (fedora-20-primary -> fedora-20-$arch)
+        ln -s $keyfile ${keyfile%%-*}-$arch # NOTE: RPM replaces %% with %
+    done
 done
+# and add symlink for compat generic location
 ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-%{dist_version}-fedora
-for arch in aarch64 ppc ppc64 s390 s390x
-  do
-  ln -s RPM-GPG-KEY-fedora-%{dist_version}-secondary RPM-GPG-KEY-fedora-%{dist_version}-$arch
-done
 popd
 
 install -d -m 755 $RPM_BUILD_ROOT/etc/yum.repos.d
@@ -99,17 +103,14 @@ for file in fedora*repo ; do
   install -m 644 $file $RPM_BUILD_ROOT/etc/yum.repos.d
 done
 
-install -m 644 %{SOURCE1} \
-	$RPM_BUILD_ROOT/etc/yum.repos.d
-
 # Set up the dist tag macros
-install -d -m 755 $RPM_BUILD_ROOT/etc/rpm
-cat >> $RPM_BUILD_ROOT/etc/rpm/macros.dist << EOF
+install -d -m 755 $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d
+cat >> $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d/macros.dist << EOF
 # dist macros.
 
-%%fedora		%{dist_version}
-%%dist		.fc%{dist_version}.R
-%%fc%{dist_version}		1
+%%fedora                %{dist_version}
+%%dist                .fc%{dist_version}.R
+%%fc%{dist_version}                1
 EOF
 
 %clean
@@ -127,10 +128,9 @@ rm -rf $RPM_BUILD_ROOT
 %dir /etc/yum.repos.d
 %config(noreplace) /etc/yum.repos.d/fedora.repo
 %config(noreplace) /etc/yum.repos.d/fedora-updates*.repo
-%config(noreplace) /etc/yum.repos.d/rfremix-install-media-dvd.repo
 %config(noreplace) %attr(0644,root,root) /etc/issue
 %config(noreplace) %attr(0644,root,root) /etc/issue.net
-%config %attr(0644,root,root) /etc/rpm/macros.dist
+%attr(0644,root,root) %{_rpmconfigdir}/macros.d/macros.dist
 %dir /etc/pki/rpm-gpg
 /etc/pki/rpm-gpg/*
 
@@ -140,6 +140,22 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Feb 17 2014 Dennis Gilmore <dennis@ausil.us> - 21-0.5.R
+- provide system-release(%%version) rhbz#1047058
+
+* Mon Jan 13 2014 Dennis Gilmore <dennis@ausil.us> - 21-0.4.R
+- set metadata expiry to 12 hours as dnf defaults to something silly bz#1045678
+
+* Sat Dec 28 2013 Ville Skyttä <ville.skytta@iki.fi> - 21-0.3.R
+- Install macros.dist as non-%%config to %%{_rpmconfigdir}/macros.d (#846679).
+- Fix bogus date in %%changelog.
+
+* Wed Nov 13 2013 Dennis Gilmore <dennis@ausil.us> - 21-0.2.R
+- remove f20 keys add f21
+- patch from Will Woods to use a archmap file for linking gpg keys
+- add fields to /etc/os-release for rhbz#951119
+- set skip_if_unavailable=False for rhbz#985354
+
 * Wed Sep  4 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 21-0.1.R
 - sync with new rawhide
 
