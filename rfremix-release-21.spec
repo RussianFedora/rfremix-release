@@ -7,9 +7,9 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	21
-Release:	0.5.R
+Release:	0.7.R
 Epoch:		2
-License:	GPLv2
+License:	MIT
 Group:		System Environment/Base
 URL:		http://fedoraproject.org
 Source:		%{name}-%{version}.tar.bz2
@@ -24,6 +24,7 @@ Requires:	rfremix-config
 Obsoletes:	russianfedora-repos < %{version}
 Obsoletes:	fedora-release
 Obsoletes:	generic-release
+Requires:       rfremix-release-rawhide = %{version}-%{release}
 BuildArch:	noarch
 
 %description
@@ -118,7 +119,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%doc GPL Fedora-Legal-README.txt
+%doc LICENSE Fedora-Legal-README.txt
 %config %attr(0644,root,root) /etc/os-release
 %config %attr(0644,root,root) /etc/fedora-release
 %config %attr(0644,root,root) /etc/rfremix-release
@@ -140,6 +141,11 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jun 26 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.7.R
+- update Fedora-Legal-README.txt with updates from legal rhbz#1096434
+- Change license to MIT to reflect the change in the fedora compilation
+- based on reccomendations from Red Hat Legal rhbz#1096434
+
 * Wed Feb 17 2014 Dennis Gilmore <dennis@ausil.us> - 21-0.5.R
 - provide system-release(%%version) rhbz#1047058
 
