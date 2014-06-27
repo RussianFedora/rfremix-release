@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	21
-Release:	0.7.R
+Release:	0.7.1.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -24,7 +24,7 @@ Requires:	rfremix-config
 Obsoletes:	russianfedora-repos < %{version}
 Obsoletes:	fedora-release
 Obsoletes:	generic-release
-Requires:       rfremix-release-rawhide = %{version}-%{release}
+Requires:       rfremix-release-rawhide = %{epoch}:%{version}-%{release}
 BuildArch:	noarch
 
 %description
@@ -141,6 +141,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Jun 27 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.7.1.R
+- added epoch to require
+
 * Thu Jun 26 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.7.R
 - update Fedora-Legal-README.txt with updates from legal rhbz#1096434
 - Change license to MIT to reflect the change in the fedora compilation
