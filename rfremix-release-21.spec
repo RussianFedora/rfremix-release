@@ -49,7 +49,7 @@ Provides a base package for non-product-specific configuration files to
 depend on.
 
 %package cloud
-Summary:        Base package for Fedora Cloud-specific default configurations
+Summary:        Base package for RFRemix Cloud-specific default configurations
 Provides:       system-release-cloud
 Provides:       system-release-cloud(%{version})
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
@@ -62,11 +62,11 @@ Conflicts:      fedora-release-workstation
 Conflicts:      rfremix-release-workstation
 
 %description cloud
-Provides a base package for Fedora Cloud-specific configuration files to
+Provides a base package for RFRemix Cloud-specific configuration files to
 depend on.
 
 %package server
-Summary:        Base package for Fedora Server-specific default configurations
+Summary:        Base package for RFRemix Server-specific default configurations
 Provides:       system-release-server
 Provides:       system-release-server(%{version})
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
@@ -84,11 +84,11 @@ Conflicts:      fedora-release-workstation
 Conflicts:      rfremix-release-workstation
 
 %description server
-Provides a base package for Fedora Server-specific configuration files to
+Provides a base package for RFRemix Server-specific configuration files to
 depend on.
 
 %package workstation
-Summary:        Base package for Fedora Workstation-specific default configurations
+Summary:        Base package for RFRemix Workstation-specific default configurations
 Provides:       system-release-workstation
 Provides:       system-release-workstation(%{version})
 Requires:       fedora-release = %{epoch}:%{version}-%{release}
@@ -101,7 +101,7 @@ Conflicts:      fedora-release-standard
 Conflicts:      rfremix-release-standard
 
 %description workstation
-Provides a base package for Fedora Workstation-specific configuration files to
+Provides a base package for RFRemix Workstation-specific configuration files to
 depend on.
 
 %prep
