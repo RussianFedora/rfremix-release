@@ -1,17 +1,17 @@
-%define release_name Rawhide
+%define release_name Twenty One
 %define dist_version 21
 # validate at 20101017. only increase rfremix_version
 %define rfremix_version 21
-%define bug_version Rawhide
+%define bug_version 21
 
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	21
-Release:	0.7.1.R
+Release:	0.13.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
-URL:		http://fedoraproject.org
+URL:		http://russianfedora.pro
 Source:		%{name}-%{version}.tar.bz2
 
 Obsoletes:	redhat-release
@@ -20,26 +20,89 @@ Provides:	system-release = %{epoch}:%{version}-%{release}
 Provides:	fedora-release = %{epoch}:%{version}-%{release}
 Provides:	generic-release = %{epoch}:%{version}-%{release}
 Provides:	system-release(%{version})
+Requires:       fedora-repos(%{version})
 Requires:	rfremix-config
 Obsoletes:	russianfedora-repos < %{version}
 Obsoletes:	fedora-release
 Obsoletes:	generic-release
-Requires:       rfremix-release-rawhide = %{epoch}:%{version}-%{release}
 BuildArch:	noarch
 
 %description
 RFRemix release files such as yum configs and various /etc/ files that
 define the release.
 
-%package rawhide
-Summary:	Rawhide repo definitions
-Requires:	rfremix-release = %{epoch}:%{version}-%{release}
-Provides:	fedora-reddlease-rawhide = %{epoch}:%{version}-%{release}
-Obsoletes:	fedora-release-rawhide
+%package standard
+Summary:        Base package for non-product-specific default configurations
+Provides:       system-release-standard
+Provides:       system-release-standard(%{version})
+Requires:       rfremix-release = %{epoch}:%{version}-%{release}
+Obsoletes:	fedora-release-standard
+Conflicts:      fedora-release-cloud
+Conflicts:      rfremix-release-cloud
+Conflicts:      fedora-release-server
+Conflicts:      rfremix-release-server
+Conflicts:      fedora-release-workstation
+Conflicts:      rfremix-release-workstation
 
-%description rawhide
-This package provides the rawhide repo definitions.
+%description standard
+Provides a base package for non-product-specific configuration files to
+depend on.
 
+%package cloud
+Summary:        Base package for Fedora Cloud-specific default configurations
+Provides:       system-release-cloud
+Provides:       system-release-cloud(%{version})
+Requires:       rfremix-release = %{epoch}:%{version}-%{release}
+Obsoletes:	fedora-release-cloud
+Conflicts:      fedora-release-server
+Conflicts:      rfremix-release-server
+Conflicts:      fedora-release-standard
+Conflicts:      rfremix-release-standard
+Conflicts:      fedora-release-workstation
+Conflicts:      rfremix-release-workstation
+
+%description cloud
+Provides a base package for Fedora Cloud-specific configuration files to
+depend on.
+
+%package server
+Summary:        Base package for Fedora Server-specific default configurations
+Provides:       system-release-server
+Provides:       system-release-server(%{version})
+Requires:       rfremix-release = %{epoch}:%{version}-%{release}
+Obsoletes:	fedora-release-server
+Requires:       systemd
+Requires:       cockpit
+Requires:       rolekit
+Requires(post): sed
+Requires(post): systemd
+Conflicts:      fedora-release-cloud
+Conflicts:      rfremix-release-cloud
+Conflicts:      fedora-release-standard
+Conflicts:      rfremix-release-standard
+Conflicts:      fedora-release-workstation
+Conflicts:      rfremix-release-workstation
+
+%description server
+Provides a base package for Fedora Server-specific configuration files to
+depend on.
+
+%package workstation
+Summary:        Base package for Fedora Workstation-specific default configurations
+Provides:       system-release-workstation
+Provides:       system-release-workstation(%{version})
+Requires:       fedora-release = %{epoch}:%{version}-%{release}
+Obsoletes:      fedora-release-workstation
+Conflicts:      fedora-release-cloud
+Conflicts:      rfremix-release-cloud
+Conflicts:      fedora-release-server
+Conflicts:      rfremix-release-server
+Conflicts:      fedora-release-standard
+Conflicts:      rfremix-release-standard
+
+%description workstation
+Provides a base package for Fedora Workstation-specific configuration files to
+depend on.
 
 %prep
 %setup -q
@@ -77,33 +140,6 @@ REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=%{bug_version}
 EOF
 
-# Install the keys
-install -d -m 755 $RPM_BUILD_ROOT/etc/pki/rpm-gpg
-install -m 644 RPM-GPG-KEY* $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
-
-# Link the primary/secondary keys to arch files, according to archmap.
-# Ex: if there's a key named RPM-GPG-KEY-fedora-19-primary, and archmap
-#     says "fedora-19-primary: i386 x86_64",
-#     RPM-GPG-KEY-fedora-19-{i386,x86_64} will be symlinked to that key.
-pushd $RPM_BUILD_ROOT/etc/pki/rpm-gpg/
-for keyfile in RPM-GPG-KEY*; do
-    key=${keyfile#RPM-GPG-KEY-} # e.g. 'fedora-20-primary'
-    arches=$(sed -ne "s/^${key}://p" $RPM_BUILD_DIR/%{name}-%{version}/archmap) \
-        || echo "WARNING: no archmap entry for $key"
-    for arch in $arches; do
-        # replace last part with $arch (fedora-20-primary -> fedora-20-$arch)
-        ln -s $keyfile ${keyfile%%-*}-$arch # NOTE: RPM replaces %% with %
-    done
-done
-# and add symlink for compat generic location
-ln -s RPM-GPG-KEY-fedora-%{dist_version}-primary RPM-GPG-KEY-%{dist_version}-fedora
-popd
-
-install -d -m 755 $RPM_BUILD_ROOT/etc/yum.repos.d
-for file in fedora*repo ; do
-  install -m 644 $file $RPM_BUILD_ROOT/etc/yum.repos.d
-done
-
 # Set up the dist tag macros
 install -d -m 755 $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d
 cat >> $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d/macros.dist << EOF
@@ -113,6 +149,20 @@ cat >> $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d/macros.dist << EOF
 %%dist                .fc%{dist_version}.R
 %%fc%{dist_version}                1
 EOF
+
+# Add Product-specific presets
+mkdir -p %{buildroot}%{_prefix}/lib/systemd/system-preset/
+# Fedora Server
+install -m 0644 80-server.preset %{buildroot}%{_prefix}/lib/systemd/system-preset/
+
+%post server
+if [ $1 -eq 1 ] ; then
+        # Initial installation; fix up after %%systemd_post in packages
+        # possibly installed before our preset file was added
+        units=$(sed -n 's/^enable//p' \
+                < %{_prefix}/lib/systemd/system-preset/80-server.preset)
+        /usr/bin/systemctl preset $units >/dev/null 2>&1 || :
+fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -126,21 +176,31 @@ rm -rf $RPM_BUILD_ROOT
 /etc/redhat-release
 /etc/system-release
 %config %attr(0644,root,root) /etc/system-release-cpe
-%dir /etc/yum.repos.d
-%config(noreplace) /etc/yum.repos.d/fedora.repo
-%config(noreplace) /etc/yum.repos.d/fedora-updates*.repo
 %config(noreplace) %attr(0644,root,root) /etc/issue
 %config(noreplace) %attr(0644,root,root) /etc/issue.net
 %attr(0644,root,root) %{_rpmconfigdir}/macros.d/macros.dist
-%dir /etc/pki/rpm-gpg
-/etc/pki/rpm-gpg/*
 
-%files rawhide
-%defattr(-,root,root,-)
-%config(noreplace) /etc/yum.repos.d/fedora-rawhide.repo
+%files standard
+%{!?_licensedir:%global license %%doc}
+%license LICENSE
 
+%files cloud
+%{!?_licensedir:%global license %%doc}
+%license LICENSE
+
+%files server
+%{!?_licensedir:%global license %%doc}
+%license LICENSE
+%{_prefix}/lib/systemd/system-preset/80-server.preset
+
+%files workstation
+%{!?_licensedir:%global license %%doc}
+%license LICENSE
 
 %changelog
+* Thu Aug  7 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.13.R
+- sync with upstream
+
 * Fri Jun 27 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.7.1.R
 - added epoch to require
 
