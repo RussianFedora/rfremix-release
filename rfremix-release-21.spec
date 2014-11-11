@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	21
-Release:	0.13.R
+Release:	0.16.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -21,6 +21,7 @@ Provides:	fedora-release = %{epoch}:%{version}-%{release}
 Provides:	generic-release = %{epoch}:%{version}-%{release}
 Provides:	system-release(%{version})
 Requires:       fedora-repos(%{version})
+Requires:       system-release-product
 Requires:	rfremix-config
 Obsoletes:	russianfedora-repos < %{version}
 Obsoletes:	fedora-release
@@ -31,12 +32,18 @@ BuildArch:	noarch
 RFRemix release files such as yum configs and various /etc/ files that
 define the release.
 
-%package standard
+
+%package nonproduct
 Summary:        Base package for non-product-specific default configurations
-Provides:       system-release-standard
-Provides:       system-release-standard(%{version})
+Provides:       system-release-nonproduct
+Provides:       system-release-nonproduct(%{version})
+Provides:       system-release-product
+# turned out to be a bad name
+Provides:       fedora-release-standard = 21-0.16
+Provides:       rfremix-release-standard = 21-0.16
+Obsoletes:      fedora-release-standard < 21-0.16
+Obsoletes:      rfremix-release-standard < 21-0.16
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Obsoletes:	fedora-release-standard
 Conflicts:      fedora-release-cloud
 Conflicts:      rfremix-release-cloud
 Conflicts:      fedora-release-server
@@ -44,7 +51,7 @@ Conflicts:      rfremix-release-server
 Conflicts:      fedora-release-workstation
 Conflicts:      rfremix-release-workstation
 
-%description standard
+%description nonproduct
 Provides a base package for non-product-specific configuration files to
 depend on.
 
@@ -99,6 +106,8 @@ Conflicts:      fedora-release-server
 Conflicts:      rfremix-release-server
 Conflicts:      fedora-release-standard
 Conflicts:      rfremix-release-standard
+# needed for captive portal support
+Requires:       NetworkManager-config-connectivity-fedora
 
 %description workstation
 Provides a base package for RFRemix Workstation-specific configuration files to
@@ -169,6 +178,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
+%{!?_licensedir:%global license %%doc}
 %doc LICENSE Fedora-Legal-README.txt
 %config %attr(0644,root,root) /etc/os-release
 %config %attr(0644,root,root) /etc/fedora-release
@@ -180,7 +190,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %attr(0644,root,root) /etc/issue.net
 %attr(0644,root,root) %{_rpmconfigdir}/macros.d/macros.dist
 
-%files standard
+%files nonproduct
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
 
@@ -198,6 +208,10 @@ rm -rf $RPM_BUILD_ROOT
 %license LICENSE
 
 %changelog
+* Tue Nov 11 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.R
+- rename fedora-release-standard to fedora-release-nonproduct
+- add requires for captive portal to Workstation
+
 * Thu Aug  7 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.13.R
 - sync with upstream
 
