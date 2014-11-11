@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	21
-Release:	0.16.1.R
+Release:	0.16.2.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -43,6 +43,7 @@ Provides:       fedora-release-standard = 21-0.16
 Provides:       rfremix-release-standard = 21-0.16
 Obsoletes:      fedora-release-standard < 21-0.16
 Obsoletes:      rfremix-release-standard < 21-0.16
+Obsoletes:      fedora-release-nonproduct
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Conflicts:      fedora-release-cloud
 Conflicts:      rfremix-release-cloud
@@ -211,6 +212,9 @@ rm -rf $RPM_BUILD_ROOT
 %license LICENSE
 
 %changelog
+* Tue Nov 11 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.2.R
+- O: fedora-release-nonproduct for rfremix-release-nonproduct package
+
 * Tue Nov 11 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.1.R
 - all packages should P: system-release-product
 
