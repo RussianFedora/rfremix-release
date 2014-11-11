@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	21
-Release:	0.16.R
+Release:	0.16.1.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -59,6 +59,7 @@ depend on.
 Summary:        Base package for RFRemix Cloud-specific default configurations
 Provides:       system-release-cloud
 Provides:       system-release-cloud(%{version})
+Provides:       system-release-product
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-cloud
 Conflicts:      fedora-release-server
@@ -76,6 +77,7 @@ depend on.
 Summary:        Base package for RFRemix Server-specific default configurations
 Provides:       system-release-server
 Provides:       system-release-server(%{version})
+Provides:       system-release-product
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-server
 Requires:       systemd
@@ -98,6 +100,7 @@ depend on.
 Summary:        Base package for RFRemix Workstation-specific default configurations
 Provides:       system-release-workstation
 Provides:       system-release-workstation(%{version})
+Provides:       system-release-product
 Requires:       fedora-release = %{epoch}:%{version}-%{release}
 Obsoletes:      fedora-release-workstation
 Conflicts:      fedora-release-cloud
@@ -208,6 +211,9 @@ rm -rf $RPM_BUILD_ROOT
 %license LICENSE
 
 %changelog
+* Tue Nov 11 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.1.R
+- all packages should P: system-release-product
+
 * Tue Nov 11 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.R
 - rename fedora-release-standard to fedora-release-nonproduct
 - add requires for captive portal to Workstation
