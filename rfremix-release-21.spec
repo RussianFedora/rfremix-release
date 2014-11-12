@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	21
-Release:	0.16.2.R
+Release:	0.16.3.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -139,7 +139,7 @@ ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
 NAME=Fedora
 VERSION="%{rfremix_version} (%{release_name})"
-ID=rfremix
+ID=fedora
 ID_LIKE=fedora
 VERSION_ID=%{rfremix_version}
 PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
@@ -212,6 +212,9 @@ rm -rf $RPM_BUILD_ROOT
 %license LICENSE
 
 %changelog
+* Wed Nov 12 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.3.R
+- use ID=fedora for proper abrt working
+
 * Tue Nov 11 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.2.R
 - O: fedora-release-nonproduct for rfremix-release-nonproduct package
 
