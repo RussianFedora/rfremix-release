@@ -2,13 +2,13 @@
 %define dist_version 20
 # validate at 20101017. only increase rfremix_version
 # and in rfremix-install-media-dvd.repo too
-%define rfremix_version 20
+%define rfremix_version 20.1
 %define bug_version 20
 
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        20
-Release:        1.R
+Release:        3.R
 Epoch:          2
 License:        GPLv2
 Group:          System Environment/Base
@@ -17,7 +17,8 @@ Source:         %{name}-%{version}.tar.bz2
 
 Obsoletes:      redhat-release
 Provides:       redhat-release
-Provides:       system-release = %{epoch}:%{version}-%{release}
+Provides:       system-release
+Provides:       system-release(%{version})
 Provides:       fedora-release = %{epoch}:%{version}-%{release}
 Provides:       generic-release = %{epoch}:%{version}-%{release}
 Requires:       rfremix-config
@@ -27,7 +28,7 @@ Obsoletes:      generic-release
 Obsoletes:      fedora-release-rawhide < %{version}-%{release}
 Obsoletes:      rfremix-release-rawhide < %{version}-%{release}
 Obsoletes:      generic-release-rawhide < %{version}-%{release}
-BuildArch:       noarch
+BuildArch:      noarch
 
 %description
 RFRemix release files such as yum configs and various /etc/ files that
@@ -65,7 +66,7 @@ ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
 NAME=Fedora
 VERSION="%{rfremix_version} (%{release_name})"
-ID=rfremix
+ID=fedora
 ID_LIKE=fedora
 VERSION_ID=%{rfremix_version}
 PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
@@ -143,6 +144,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Nov 26 2014 Arkady L. Shane <ashejn@yandex-team.ru> - 20-3.R
+- release RFRemix 20.1
+- provide system-release(%%version) rhbz#1047058
+
 * Fri Nov 29 2013 Arkady L. Shane <ashejn@yandex-team.ru> - 20-1.R
 - enabled metadata caching for fedora
 - disable updates-testing
