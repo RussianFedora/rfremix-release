@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	21
-Release:	0.16.3.R
+Release:	1.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -21,7 +21,6 @@ Provides:	fedora-release = %{epoch}:%{version}-%{release}
 Provides:	generic-release = %{epoch}:%{version}-%{release}
 Provides:	system-release(%{version})
 Requires:       fedora-repos(%{version})
-Requires:       system-release-product
 Requires:	rfremix-config
 Obsoletes:	russianfedora-repos < %{version}
 Obsoletes:	fedora-release
@@ -113,6 +112,9 @@ Conflicts:      rfremix-release-standard
 # needed for captive portal support
 Requires:       NetworkManager-config-connectivity-fedora
 
+Requires(post): /usr/bin/glib-compile-schemas
+Requires(postun): /usr/bin/glib-compile-schemas
+
 %description workstation
 Provides a base package for RFRemix Workstation-specific configuration files to
 depend on.
@@ -168,6 +170,11 @@ mkdir -p %{buildroot}%{_prefix}/lib/systemd/system-preset/
 # Fedora Server
 install -m 0644 80-server.preset %{buildroot}%{_prefix}/lib/systemd/system-preset/
 
+# Override the list of enabled gnome-shell extensions for Workstation
+mkdir -p %{buildroot}%{_datadir}/glib-2.0/schemas/
+install -m 0644 org.gnome.shell.gschema.override %{buildroot}%{_datadir}/glib-2.0/schemas/
+
+
 %post server
 if [ $1 -eq 1 ] ; then
         # Initial installation; fix up after %%systemd_post in packages
@@ -176,6 +183,14 @@ if [ $1 -eq 1 ] ; then
                 < %{_prefix}/lib/systemd/system-preset/80-server.preset)
         /usr/bin/systemctl preset $units >/dev/null 2>&1 || :
 fi
+
+%postun workstation
+if [ $1 -eq 0 ] ; then
+    glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
+fi
+
+%posttrans workstation
+glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -210,8 +225,14 @@ rm -rf $RPM_BUILD_ROOT
 %files workstation
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
+%{_datadir}/glib-2.0/schemas/org.gnome.shell.gschema.override
 
 %changelog
+* Sun Dec  7 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-1.R
+- ship an override file to enable the gnome-shell background logo extension
+- drop Require on system-release-product rhbz#1156198
+- final RFRemix 21
+
 * Wed Nov 12 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.3.R
 - use ID=fedora for proper abrt working
 
