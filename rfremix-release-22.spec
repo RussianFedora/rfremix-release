@@ -1,13 +1,13 @@
-%define release_name Twenty One
-%define dist_version 21
+%define release_name Twenty Two
+%define dist_version 22
 # validate at 20101017. only increase rfremix_version
-%define rfremix_version 21
-%define bug_version 21
+%define rfremix_version 22
+%define bug_version 22
 
 Summary:	RFRemix release files
 Name:		rfremix-release
-Version:	21
-Release:	1.R
+Version:	22
+Release:	0.12.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -138,7 +138,8 @@ echo >> $RPM_BUILD_ROOT/etc/issue
 ln -s fedora-release $RPM_BUILD_ROOT/etc/redhat-release
 ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 
-cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
+install -d $RPM_BUILD_ROOT/usr/lib
+cat << EOF >>$RPM_BUILD_ROOT/usr/lib/os-release
 NAME=Fedora
 VERSION="%{rfremix_version} (%{release_name})"
 ID=fedora
@@ -153,7 +154,10 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=%{bug_version}
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=%{bug_version}
+PRIVACY_POLICY=https://fedoraproject.org/wiki/Legal:PrivacyPolicy
 EOF
+
+ln -s /usr/lib/os-release $RPM_BUILD_ROOT/etc/os-release
 
 # Set up the dist tag macros
 install -d -m 755 $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d
@@ -192,14 +196,12 @@ fi
 %posttrans workstation
 glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
-%clean
-rm -rf $RPM_BUILD_ROOT
-
 %files
 %defattr(-,root,root,-)
 %{!?_licensedir:%global license %%doc}
-%doc LICENSE Fedora-Legal-README.txt
-%config %attr(0644,root,root) /etc/os-release
+%license LICENSE Fedora-Legal-README.txt
+%config %attr(0644,root,root) /usr/lib/os-release
+/etc/os-release
 %config %attr(0644,root,root) /etc/fedora-release
 %config %attr(0644,root,root) /etc/rfremix-release
 /etc/redhat-release
