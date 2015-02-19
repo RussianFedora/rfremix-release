@@ -230,6 +230,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.shell.gschema.override
 
 %changelog
+* Thu Feb 19 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 22-0.12.R
+- update for RFRemix 22
+
 * Sun Dec  7 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-1.R
 - ship an override file to enable the gnome-shell background logo extension
 - drop Require on system-release-product rhbz#1156198
