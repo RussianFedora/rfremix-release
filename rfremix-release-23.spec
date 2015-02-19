@@ -1,13 +1,13 @@
-%define release_name Twenty One
-%define dist_version 22
+%define release_name Rawhide
+%define dist_version 23
 # validate at 20101017. only increase rfremix_version
-%define rfremix_version 22
+%define rfremix_version 23
 %define bug_version Rawhide
 
 Summary:	RFRemix release files
 Name:		rfremix-release
-Version:	22
-Release:	0.5.R
+Version:	23
+Release:	0.2.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -31,12 +31,19 @@ BuildArch:	noarch
 RFRemix release files such as yum configs and various /etc/ files that
 define the release.
 
-%package standard
+
+%package nonproduct
 Summary:        Base package for non-product-specific default configurations
-Provides:       system-release-standard
-Provides:       system-release-standard(%{version})
+Provides:       system-release-nonproduct
+Provides:       system-release-nonproduct(%{version})
+Provides:       system-release-product
+# turned out to be a bad name
+Provides:       fedora-release-standard = 21-0.16
+Provides:       rfremix-release-standard = 21-0.16
+Obsoletes:      fedora-release-standard < 21-0.16
+Obsoletes:      rfremix-release-standard < 21-0.16
+Obsoletes:      fedora-release-nonproduct
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Obsoletes:	fedora-release-standard
 Conflicts:      fedora-release-cloud
 Conflicts:      rfremix-release-cloud
 Conflicts:      fedora-release-server
@@ -44,7 +51,7 @@ Conflicts:      rfremix-release-server
 Conflicts:      fedora-release-workstation
 Conflicts:      rfremix-release-workstation
 
-%description standard
+%description nonproduct
 Provides a base package for non-product-specific configuration files to
 depend on.
 
@@ -52,6 +59,7 @@ depend on.
 Summary:        Base package for RFRemix Cloud-specific default configurations
 Provides:       system-release-cloud
 Provides:       system-release-cloud(%{version})
+Provides:       system-release-product
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-cloud
 Conflicts:      fedora-release-server
@@ -69,6 +77,7 @@ depend on.
 Summary:        Base package for RFRemix Server-specific default configurations
 Provides:       system-release-server
 Provides:       system-release-server(%{version})
+Provides:       system-release-product
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-server
 Requires:       systemd
@@ -91,6 +100,7 @@ depend on.
 Summary:        Base package for RFRemix Workstation-specific default configurations
 Provides:       system-release-workstation
 Provides:       system-release-workstation(%{version})
+Provides:       system-release-product
 Requires:       fedora-release = %{epoch}:%{version}-%{release}
 Obsoletes:      fedora-release-workstation
 Conflicts:      fedora-release-cloud
@@ -99,6 +109,11 @@ Conflicts:      fedora-release-server
 Conflicts:      rfremix-release-server
 Conflicts:      fedora-release-standard
 Conflicts:      rfremix-release-standard
+# needed for captive portal support
+Requires:       NetworkManager-config-connectivity-fedora
+
+Requires(post): /usr/bin/glib-compile-schemas
+Requires(postun): /usr/bin/glib-compile-schemas
 
 %description workstation
 Provides a base package for RFRemix Workstation-specific configuration files to
@@ -123,10 +138,11 @@ echo >> $RPM_BUILD_ROOT/etc/issue
 ln -s fedora-release $RPM_BUILD_ROOT/etc/redhat-release
 ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 
-cat << EOF >>$RPM_BUILD_ROOT/etc/os-release
+install -d $RPM_BUILD_ROOT/usr/lib
+cat << EOF >>$RPM_BUILD_ROOT/usr/lib/os-release
 NAME=Fedora
 VERSION="%{rfremix_version} (%{release_name})"
-ID=rfremix
+ID=fedora
 ID_LIKE=fedora
 VERSION_ID=%{rfremix_version}
 PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
@@ -138,7 +154,10 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=%{bug_version}
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=%{bug_version}
+PRIVACY_POLICY=https://fedoraproject.org/wiki/Legal:PrivacyPolicy
 EOF
+
+ln -s /usr/lib/os-release $RPM_BUILD_ROOT/etc/os-release
 
 # Set up the dist tag macros
 install -d -m 755 $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d
@@ -155,6 +174,11 @@ mkdir -p %{buildroot}%{_prefix}/lib/systemd/system-preset/
 # Fedora Server
 install -m 0644 80-server.preset %{buildroot}%{_prefix}/lib/systemd/system-preset/
 
+# Override the list of enabled gnome-shell extensions for Workstation
+mkdir -p %{buildroot}%{_datadir}/glib-2.0/schemas/
+install -m 0644 org.gnome.shell.gschema.override %{buildroot}%{_datadir}/glib-2.0/schemas/
+
+
 %post server
 if [ $1 -eq 1 ] ; then
         # Initial installation; fix up after %%systemd_post in packages
@@ -164,13 +188,20 @@ if [ $1 -eq 1 ] ; then
         /usr/bin/systemctl preset $units >/dev/null 2>&1 || :
 fi
 
-%clean
-rm -rf $RPM_BUILD_ROOT
+%postun workstation
+if [ $1 -eq 0 ] ; then
+    glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
+fi
+
+%posttrans workstation
+glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 %files
 %defattr(-,root,root,-)
-%doc LICENSE Fedora-Legal-README.txt
-%config %attr(0644,root,root) /etc/os-release
+%{!?_licensedir:%global license %%doc}
+%license LICENSE Fedora-Legal-README.txt
+%config %attr(0644,root,root) /usr/lib/os-release
+/etc/os-release
 %config %attr(0644,root,root) /etc/fedora-release
 %config %attr(0644,root,root) /etc/rfremix-release
 /etc/redhat-release
@@ -180,7 +211,7 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %attr(0644,root,root) /etc/issue.net
 %attr(0644,root,root) %{_rpmconfigdir}/macros.d/macros.dist
 
-%files standard
+%files nonproduct
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
 
@@ -196,10 +227,29 @@ rm -rf $RPM_BUILD_ROOT
 %files workstation
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
+%{_datadir}/glib-2.0/schemas/org.gnome.shell.gschema.override
 
 %changelog
-* Thu Aug  7 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 22-0.5.R
-- update for RFRemix 22
+* Thu Feb 19 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 23-0.2.R
+- update for new Rawhide
+
+* Sun Dec  7 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-1.R
+- ship an override file to enable the gnome-shell background logo extension
+- drop Require on system-release-product rhbz#1156198
+- final RFRemix 21
+
+* Wed Nov 12 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.3.R
+- use ID=fedora for proper abrt working
+
+* Tue Nov 11 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.2.R
+- O: fedora-release-nonproduct for rfremix-release-nonproduct package
+
+* Tue Nov 11 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.1.R
+- all packages should P: system-release-product
+
+* Tue Nov 11 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.16.R
+- rename fedora-release-standard to fedora-release-nonproduct
+- add requires for captive portal to Workstation
 
 * Thu Aug  7 2014 Arkady L. Shane <ashejn@russianfedora.pro> - 21-0.13.R
 - sync with upstream
