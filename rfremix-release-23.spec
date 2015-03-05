@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	23
-Release:	0.2.R
+Release:	0.3.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -157,7 +157,7 @@ REDHAT_SUPPORT_PRODUCT_VERSION=%{bug_version}
 PRIVACY_POLICY=https://fedoraproject.org/wiki/Legal:PrivacyPolicy
 EOF
 
-ln -s /usr/lib/os-release $RPM_BUILD_ROOT/etc/os-release
+ln -s ../usr/lib/os-release $RPM_BUILD_ROOT/etc/os-release
 
 # Set up the dist tag macros
 install -d -m 755 $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d
@@ -230,6 +230,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.shell.gschema.override
 
 %changelog
+* Tue Feb 24 2015 Dennis Gilmore <dennis@ausil.us> - 23-0.3.R
+- make the /etc/os-release symlink relative rhbz#1192276
+
 * Thu Feb 19 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 23-0.2.R
 - update for new Rawhide
 
