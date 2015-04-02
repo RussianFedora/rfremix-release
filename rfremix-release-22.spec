@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	22
-Release:	0.14.R
+Release:	0.14.1.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -52,8 +52,8 @@ Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-cloud
 Conflicts:      fedora-release-server
 Conflicts:      rfremix-release-server
-Conflicts:      fedora-release-standard
-Conflicts:      rfremix-release-standard
+Conflicts:      fedora-release-standard < 22-0.14
+Conflicts:      rfremix-release-standard < 22-0.14
 Conflicts:      fedora-release-workstation
 Conflicts:      rfremix-release-workstation
 
@@ -75,8 +75,8 @@ Requires(post): sed
 Requires(post): systemd
 Conflicts:      fedora-release-cloud
 Conflicts:      rfremix-release-cloud
-Conflicts:      fedora-release-standard
-Conflicts:      rfremix-release-standard
+Conflicts:      fedora-release-standard < 22-0.14
+Conflicts:      rfremix-release-standard < 22-0.14
 Conflicts:      fedora-release-workstation
 Conflicts:      rfremix-release-workstation
 
@@ -89,14 +89,14 @@ Summary:        Base package for RFRemix Workstation-specific default configurat
 Provides:       system-release-workstation
 Provides:       system-release-workstation(%{version})
 Provides:       system-release-product
-Requires:       fedora-release = %{epoch}:%{version}-%{release}
+Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:      fedora-release-workstation
 Conflicts:      fedora-release-cloud
 Conflicts:      rfremix-release-cloud
 Conflicts:      fedora-release-server
 Conflicts:      rfremix-release-server
-Conflicts:      fedora-release-standard
-Conflicts:      rfremix-release-standard
+Conflicts:      fedora-release-standard < 22-0.14
+Conflicts:      rfremix-release-standard < 22-0.14
 # needed for captive portal support
 Requires:       NetworkManager-config-connectivity-fedora
 Requires(post): /usr/bin/glib-compile-schemas
@@ -328,6 +328,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 
 %changelog
+* Fri Apr  3 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 22-0.14.1.R
+- setup version for standard package conflicts
+
 * Wed Apr  1 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 22-0.14.R
 - sync with upstream
 
