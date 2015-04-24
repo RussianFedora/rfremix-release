@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	22
-Release:	0.14.1.R
+Release:	0.14.2.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -29,12 +29,12 @@ Obsoletes:	generic-release
 # Kill off the fedora-release-nonproduct package
 Provides:       fedora-release-nonproduct = %{version}
 Provides:       rfremix-release-nonproduct = %{version}
-Obsoletes:      fedora-release-nonproduct <= 23-0.3
-Obsoletes:      rfremix-release-nonproduct <= 23-0.3
-Provides:       fedora-release-standard = 22-0.8
-Provides:       rfremix-release-standard = 22-0.8
-Obsoletes:      fedora-release-standard < 22-0.8
-Obsoletes:      rfremix-release-standard < 22-0.8
+Obsoletes:      fedora-release-nonproduct <= %{epoch}:23-0.3
+Obsoletes:      rfremix-release-nonproduct <= %{epoch}:23-0.3
+Provides:       fedora-release-standard = %{epoch}:%{version}-%{release}
+Provides:       rfremix-release-standard = %{epoch}:%{version}-%{release}
+Obsoletes:      fedora-release-standard < %{epoch}:22-0.14
+Obsoletes:      rfremix-release-standard < %{epoch}:22-0.14
 
 BuildArch:	noarch
 
@@ -52,8 +52,8 @@ Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-cloud
 Conflicts:      fedora-release-server
 Conflicts:      rfremix-release-server
-Conflicts:      fedora-release-standard < 22-0.14
-Conflicts:      rfremix-release-standard < 22-0.14
+Conflicts:      fedora-release-standard < %{epoch}:22-0.14
+Conflicts:      rfremix-release-standard < %{epoch}:22-0.14
 Conflicts:      fedora-release-workstation
 Conflicts:      rfremix-release-workstation
 
@@ -75,8 +75,8 @@ Requires(post): sed
 Requires(post): systemd
 Conflicts:      fedora-release-cloud
 Conflicts:      rfremix-release-cloud
-Conflicts:      fedora-release-standard < 22-0.14
-Conflicts:      rfremix-release-standard < 22-0.14
+Conflicts:      fedora-release-standard < %{epoch}:22-0.14
+Conflicts:      rfremix-release-standard < %{epoch}:22-0.14
 Conflicts:      fedora-release-workstation
 Conflicts:      rfremix-release-workstation
 
@@ -95,8 +95,8 @@ Conflicts:      fedora-release-cloud
 Conflicts:      rfremix-release-cloud
 Conflicts:      fedora-release-server
 Conflicts:      rfremix-release-server
-Conflicts:      fedora-release-standard < 22-0.14
-Conflicts:      rfremix-release-standard < 22-0.14
+Conflicts:      fedora-release-standard < %{epoch}:22-0.14
+Conflicts:      rfremix-release-standard < %{epoch}:22-0.14
 # needed for captive portal support
 Requires:       NetworkManager-config-connectivity-fedora
 Requires(post): /usr/bin/glib-compile-schemas
