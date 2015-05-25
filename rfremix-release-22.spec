@@ -7,7 +7,7 @@
 Summary:	RFRemix release files
 Name:		rfremix-release
 Version:	22
-Release:	0.14.2.R
+Release:	1.R
 Epoch:		2
 License:	MIT
 Group:		System Environment/Base
@@ -141,24 +141,27 @@ REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=%{bug_version}
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=%{bug_version}
-PRIVACY_POLICY=https://fedoraproject.org/wiki/Legal:PrivacyPolicy
+PRIVACY_POLICY_URL=https://fedoraproject.org/wiki/Legal:PrivacyPolicy
 EOF
 
 # Create os-release files for the different editions
 # Cloud
 cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora \
       $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-cloud
-echo "VARIANT=Cloud" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-cloud
+echo "VARIANT=\"Cloud Edition\"" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-cloud
+echo "VARIANT_ID=cloud" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-cloud
 
 # Server
 cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora \
       $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-server
-echo "VARIANT=Server" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-server
+echo "VARIANT=\"Server Edition\"" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-server
+echo "VARIANT_ID=server" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-server
 
 # Workstation
 cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora \
       $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-workstation
-echo "VARIANT=Workstation" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-workstation
+echo "VARIANT=\"Workstation Edition\"" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-workstation
+echo "VARIANT_ID=workstation" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-workstation
 
 # Create the symlink for /etc/os-release
 # This will be standard until %post when the
@@ -199,9 +202,7 @@ if [ $1 = 0 ]; then
 fi
 
 %post cloud
-if [ $1 -eq 1 ] ; then
-    # Initial installation
-
+# Run every time
     # If there is no link to os-release yet from some other
     # release package, create it
     test -e /usr/lib/os-release || \
@@ -212,7 +213,6 @@ if [ $1 -eq 1 ] ; then
     if [ \! -h /usr/lib/os-release -o "x$(readlink /usr/lib/os-release)" = "xos.release.d/os-release-fedora" ]; then
         ln -sf ./os.release.d/os-release-cloud /usr/lib/os-release || :
     fi
-fi
 
 %postun cloud
 # Uninstall
@@ -225,9 +225,7 @@ fi
 
 
 %post server
-if [ $1 -eq 1 ] ; then
-    # Initial installation
-
+# Run every time
     # If there is no link to os-release yet from some other
     # release package, create it
     test -e /usr/lib/os-release || \
@@ -239,7 +237,10 @@ if [ $1 -eq 1 ] ; then
         ln -sf ./os.release.d/os-release-server /usr/lib/os-release || :
     fi
 
+if [ $1 -eq 1 ] ; then
+    # Initial installation
     # fix up after %%systemd_post in packages
+
     # possibly installed before our preset file was added
     units=$(sed -n 's/^enable//p' \
         < %{_prefix}/lib/systemd/system-preset/80-server.preset)
@@ -256,9 +257,7 @@ if [ $1 = 0 ]; then
 fi
 
 %post workstation
-if [ $1 -eq 1 ] ; then
-    # Initial installation
-
+# Run every time
     # If there is no link to os-release yet from some other
     # release package, create it
     test -e /usr/lib/os-release || \
@@ -269,6 +268,9 @@ if [ $1 -eq 1 ] ; then
     if [ \! -h /usr/lib/os-release -o "x$(readlink /usr/lib/os-release)" = "xos.release.d/os-release-fedora" ]; then
         ln -sf ./os.release.d/os-release-workstation /usr/lib/os-release || :
     fi
+
+if [ $1 -eq 1 ] ; then
+    # Initial installation
 
     # fix up after %%systemd_post in packages
     # possibly installed before our preset file was added
@@ -328,6 +330,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 
 %changelog
+* Mon May 25 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 22-1.R
+- Final release RFRemix 22
+
 * Fri Apr  3 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 22-0.14.1.R
 - setup version for standard package conflicts
 
