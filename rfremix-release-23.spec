@@ -16,7 +16,7 @@ Source:         %{name}-%{version}.tar.bz2
 Obsoletes:      redhat-release
 Provides:       redhat-release
 Obsoletes:      fedora-release
-Provides:       fedora-release
+Provides:       fedora-release = %{version}-%{release}
 Provides:       system-release
 Provides:       system-release(%{version})
 
