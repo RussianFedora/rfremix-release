@@ -14,8 +14,9 @@ Group:          System Environment/Base
 URL:            http://fedoraproject.org
 Source:         %{name}-%{version}.tar.bz2
 Obsoletes:      redhat-release
-Provides:       fedora-release
 Provides:       redhat-release
+Obsoletes:      fedora-release
+Provides:       fedora-release
 Provides:       system-release
 Provides:       system-release(%{version})
 
