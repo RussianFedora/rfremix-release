@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        23
-Release:        0.15.1.R
+Release:        0.15.2.R
 Epoch:		2
 License:        MIT
 Group:          System Environment/Base
@@ -16,7 +16,7 @@ Source:         %{name}-%{version}.tar.bz2
 Obsoletes:      redhat-release
 Provides:       redhat-release
 Obsoletes:      fedora-release
-Provides:       fedora-release = %{version}-%{release}
+Provides:       fedora-release = %{epoch}:%{version}-%{release}
 Provides:       system-release
 Provides:       system-release(%{version})
 
