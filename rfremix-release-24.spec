@@ -7,8 +7,8 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        24
-Release:        0.1.1.R
-Epoch:		2
+Release:        0.1.2.R
+Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
 URL:            http://fedoraproject.org
@@ -16,7 +16,7 @@ Source:         %{name}-%{version}.tar.bz2
 Obsoletes:      redhat-release
 Provides:       redhat-release
 Obsoletes:      fedora-release
-Provides:       fedora-release
+Provides:       fedora-release = %{epoch}:%{version}-%{release}
 Provides:       system-release
 Provides:       system-release(%{version})
 
