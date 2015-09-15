@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        23
-Release:        0.15.2.R
+Release:        0.17.R
 Epoch:		2
 License:        MIT
 Group:          System Environment/Base
@@ -93,10 +93,6 @@ install -d $RPM_BUILD_ROOT/etc
 echo "Fedora release %{version} (%{release_name})" > $RPM_BUILD_ROOT/etc/fedora-release
 echo "RFRemix release %{rfremix_version} (%{release_name})" > $RPM_BUILD_ROOT/etc/rfremix-release
 echo "cpe:/o:fedoraproject:fedora:%{version}" > $RPM_BUILD_ROOT/etc/system-release-cpe
-cp -p $RPM_BUILD_ROOT/etc/rfremix-release $RPM_BUILD_ROOT/etc/issue
-echo "Kernel \r on an \m (\l)" >> $RPM_BUILD_ROOT/etc/issue
-cp -p $RPM_BUILD_ROOT/etc/issue $RPM_BUILD_ROOT/etc/issue.net
-echo >> $RPM_BUILD_ROOT/etc/issue
 ln -s fedora-release $RPM_BUILD_ROOT/etc/redhat-release
 ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 
@@ -120,7 +116,17 @@ REDHAT_SUPPORT_PRODUCT_VERSION=%{bug_version}
 PRIVACY_POLICY_URL=https://fedoraproject.org/wiki/Legal:PrivacyPolicy
 EOF
 
-# Create os-release files for the different editions
+# Create the common /etc/issue
+echo "\S" > $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-fedora
+echo "Kernel \r on an \m (\l)" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-fedora
+echo >> $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-fedora
+
+# Create /etc/issue.net
+echo "\S" > $RPM_BUILD_ROOT/usr/lib/issue.net
+echo "Kernel \r on an \m (\l)" >> $RPM_BUILD_ROOT/usr/lib/issue.net
+ln -s ../usr/lib/issue.net $RPM_BUILD_ROOT/etc/issue.net
+
+# Create os-release and issue files for the different editions
 # Cloud
 cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora \
       $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-cloud
@@ -318,6 +324,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 
 %changelog
+* Tue Sep 15 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.17.R
+- rebuild to drop timesysncd enabled from server
+- Make /etc/issue configurable per-edition
+- Resolves: RHBZ#1239089
+
 * Mon Jul 20 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.15.R
 - update for RFRemix 23
 
