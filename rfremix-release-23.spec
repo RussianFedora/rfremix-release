@@ -93,6 +93,8 @@ install -d $RPM_BUILD_ROOT/etc
 echo "Fedora release %{version} (%{release_name})" > $RPM_BUILD_ROOT/etc/fedora-release
 echo "RFRemix release %{rfremix_version} (%{release_name})" > $RPM_BUILD_ROOT/etc/rfremix-release
 echo "cpe:/o:fedoraproject:fedora:%{version}" > $RPM_BUILD_ROOT/etc/system-release-cpe
+
+# Symlink the -release files
 ln -s fedora-release $RPM_BUILD_ROOT/etc/redhat-release
 ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 
@@ -100,11 +102,10 @@ ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 install -d $RPM_BUILD_ROOT/usr/lib/os.release.d/
 cat << EOF >>$RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora
 NAME=Fedora
-VERSION="%{dist_version} (%{release_name})"
-ID=fedora
-ID_LIKE=fedora
 VERSION="%{rfremix_version} (%{release_name})"
-PETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
+ID=fedora
+VERSION_ID=%{dist_version}
+PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{dist_version}"
 HOME_URL="https://fedoraproject.org/"
@@ -141,6 +142,11 @@ echo "VARIANT=\"Server Edition\"" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-rel
 echo "VARIANT_ID=server" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-server
 sed -i -e "s|(%{release_name})|(Server Edition)|g" $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-server
 
+cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-fedora \
+      $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-server
+echo "Admin Console: https://\4:9090/ or https://\6:9090/" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-server
+echo >> $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-server
+
 # Workstation
 cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora \
       $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-workstation
@@ -154,6 +160,13 @@ sed -i -e "s|(%{release_name})|(Workstation Edition)|g" $RPM_BUILD_ROOT/usr/lib/
 # /usr/lib/os-release
 ln -s ../usr/lib/os-release $RPM_BUILD_ROOT/etc/os-release
 ln -s os.release.d/os-release-fedora $RPM_BUILD_ROOT/usr/lib/os-release
+
+# Create the symlink for /etc/issue
+# This will be standard until %post when the
+# release packages will link the appropriate one into
+# /usr/lib/os-release
+ln -s ../usr/lib/issue $RPM_BUILD_ROOT/etc/issue
+ln -s os.release.d/issue-fedora $RPM_BUILD_ROOT/usr/lib/issue
 
 # Set up the dist tag macros
 install -d -m 755 $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d
@@ -226,6 +239,12 @@ fi
         ln -sf ./os.release.d/os-release-server /usr/lib/os-release || :
     fi
 
+    # If issue isn't a link or it exists but it points to a
+    # non-productized version, replace it with this one
+    if [ \! -h /usr/lib/issue -o "x$(readlink /usr/lib/issue)" = "xos.release.d/issue-fedora" ]; then
+        ln -sf ./os.release.d/issue-server /usr/lib/issue || :
+    fi
+
 if [ $1 -eq 1 ] ; then
     # Initial installation
 
@@ -243,6 +262,9 @@ if [ $1 = 0 ]; then
     # with a symlink to basic version
     test -e /usr/lib/os-release || \
         ln -sf ./os.release.d/os-release-fedora /usr/lib/os-release || :
+
+    test -e /usr/lib/issue || \
+        ln -sf ./os.release.d/issue-fedora /usr/lib/issue || :
 fi
 
 %post workstation
@@ -295,8 +317,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /etc/redhat-release
 /etc/system-release
 %config %attr(0644,root,root) /etc/system-release-cpe
-%config(noreplace) %attr(0644,root,root) /etc/issue
-%config(noreplace) %attr(0644,root,root) /etc/issue.net
+%config %attr(0644,root,root) /usr/lib/os.release.d/issue-fedora
+/usr/lib/issue
+/etc/issue
+%config %attr(0644,root,root) /usr/lib/issue.net
+/etc/issue.net
 %attr(0644,root,root) %{_rpmconfigdir}/macros.d/macros.dist
 %dir /usr/lib/systemd/user-preset/
 %dir %{_prefix}/lib/systemd/system-preset/
@@ -314,6 +339,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
 %config %attr(0644,root,root) /usr/lib/os.release.d/os-release-server
+%config %attr(0644,root,root) /usr/lib/os.release.d/issue-server
 %{_prefix}/lib/systemd/system-preset/80-server.preset
 
 %files workstation
@@ -324,12 +350,12 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 
 %changelog
-* Tue Sep 15 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.17.R
+* Tue Sep 15 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 23-0.17.R
 - rebuild to drop timesysncd enabled from server
 - Make /etc/issue configurable per-edition
 - Resolves: RHBZ#1239089
 
-* Mon Jul 20 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.15.R
+* Mon Jul 20 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 23-0.15.R
 - update for RFRemix 23
 
 * Tue Feb 24 2015 Dennis Gilmore <dennis@ausil.us> - 23-0.3.R
