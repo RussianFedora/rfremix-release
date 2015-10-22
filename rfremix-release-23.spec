@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        23
-Release:        0.17.R
+Release:        1.R
 Epoch:		2
 License:        MIT
 Group:          System Environment/Base
@@ -144,7 +144,7 @@ sed -i -e "s|(%{release_name})|(Server Edition)|g" $RPM_BUILD_ROOT/usr/lib/os.re
 
 cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-fedora \
       $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-server
-echo "Admin Console: https://\4:9090/ or https://\6:9090/" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-server
+echo "Admin Console: https://\4:9090/ or https://[\6]:9090/" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-server
 echo >> $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-server
 
 # Workstation
@@ -350,6 +350,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 
 %changelog
+* Thu Oct 22 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 23-1.R
+- setup for RFRemix 23
+
 * Tue Sep 15 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 23-0.17.R
 - rebuild to drop timesysncd enabled from server
 - Make /etc/issue configurable per-edition
