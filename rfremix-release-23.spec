@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        23
-Release:        1.R
+Release:        2.R
 Epoch:		2
 License:        MIT
 Group:          System Environment/Base
@@ -101,9 +101,10 @@ ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 # Create the common os-release file
 install -d $RPM_BUILD_ROOT/usr/lib/os.release.d/
 cat << EOF >>$RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora
-NAME=Fedora
+NAME=RFRemix
 VERSION="%{rfremix_version} (%{release_name})"
 ID=fedora
+ID_LIKE=fedora
 VERSION_ID=%{dist_version}
 PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 ANSI_COLOR="0;34"
@@ -350,6 +351,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 
 %changelog
+* Tue Oct 27 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 23-2.R
+- set RFRemix as name
+
 * Thu Oct 22 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 23-1.R
 - setup for RFRemix 23
 
