@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        23
-Release:        2.R
+Release:        3.R
 Epoch:		2
 License:        MIT
 Group:          System Environment/Base
@@ -351,6 +351,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 
 %changelog
+* Fri Oct 30 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 23-3.R
+- enable user-theme extension
+
 * Tue Oct 27 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 23-2.R
 - set RFRemix as name
 
