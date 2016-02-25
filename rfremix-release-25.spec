@@ -1,13 +1,13 @@
 %define release_name Rawhide
 %define dist_version 24
 # validate at 20101017. only increase rfremix_version
-%define rfremix_version 24
-%define bug_version 24
+%define rfremix_version 25
+%define bug_version rawhide
 
 Summary:        RFRemix release files
 Name:           rfremix-release
-Version:        24
-Release:        0.10.R
+Version:        25
+Release:        0.1.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -397,44 +397,5 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %changelog
-* Tue Feb 23 2016 Dennis Gilmore <dennis@ausil.us> - 24-0.10.R
-- setup for f24 being branched
-
-* Thu Jan 21 2016 Stephen Gallagher <sgallagh@redhat.com> 24-0.9.R
-- Install Edition presets only for the configured Edition
-- Add script to convert from non-edition to an Edition
-- Fix upgrade bugs with non-edition installs
-- Explicitly set issue-fedora for cloud installs
-- Resolves: rhbz#1288205
-
-* Tue Dec 15 2015 Stephen Gallagher <sgallagh@redhat.com> 24-0.8.R
-- Fix copy-paste error for Workstation os-release and issue
-
-* Tue Sep 29 2015 Stephen Gallagher <sgallagh@redhat.com> 24-0.7.R
-- Rework os-release and issue mechanism to avoid upgrade issues such as
-  competing fedora-release-$EDITION packages
-- Make a non-product install persistent (it won't be converted to an Edition
-  install if something pulls in a fedora-release-$EDITION package
-
-* Mon Sep 28 2015 Dennis Gilmore <dennis@ausil.us> - 24-0.6.R
-- set bug_version to be rawhide rhbz#1259287
-
-* Tue Sep 15 2015 Stephen Gallagher <sgallagh@redhat.com> - 24-0.5.R
-- Do not clobber /etc/issue[.net] customizations
-
-* Wed Sep 09 2015 Stephen Gallagher <sgallagh@redhat.com> - 24-0.4.R
-- Update preset file with FESCo decisions
-- https://fedorahosted.org/fesco/ticket/1472
-
-* Wed Sep 09 2015 Stephen Gallagher <sgallagh@redhat.com> - 24-0.3.R
-- Enclose IPv6 addresses in square brackets in /etc/issue
-
-* Mon Aug 24 2015 Stephen Gallagher <sgallagh@redhat.com> - 24-0.2.R
-- Make /etc/issue configurable per-edition
-- Resolves: RHBZ#1239089
-
-* Mon Jul 20 2015 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.1.R
-- initial build for RFRemix 24
-
-* Tue Jul 14 2015 Dennis Gilmore <dennis@ausil.us> - 24-0.1
-- setup for rawhide being f24
+* Thu Feb 25 2016 Arkady L. Shane <ashejn@russianfedora.ru> - 25.0.1.R
+- setup for rawhide being f25
