@@ -1,5 +1,5 @@
 %define release_name Rawhide
-%define dist_version 24
+%define dist_version 25
 # validate at 20101017. only increase rfremix_version
 %define rfremix_version 25
 %define bug_version rawhide
@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        25
-Release:        0.1.R
+Release:        0.1.1.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -397,5 +397,8 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %changelog
-* Thu Feb 25 2016 Arkady L. Shane <ashejn@russianfedora.ru> - 25.0.1.R
+* Sun Feb 28 2016 Arkady L. Shane <ashejn@russianfedora.ru> - 25-0.1.1.R
+- fix version
+
+* Thu Feb 25 2016 Arkady L. Shane <ashejn@russianfedora.ru> - 25-0.1.R
 - setup for rawhide being f25
