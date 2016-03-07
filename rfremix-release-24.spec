@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        24
-Release:        0.10.R
+Release:        0.11.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -246,7 +246,7 @@ if [ "x$VARIANT_ID" = "xcloud" ]; then
     else
         # On upgrades, do not enable or disable presets to avoid surprising
         # the user
-        %{_prefix}/sbin/convert-to-edition -ip cloud
+        %{_prefix}/sbin/convert-to-edition -ie cloud
     fi
 fi
 
@@ -319,7 +319,7 @@ if [ "x$VARIANT_ID" = "xworkstation" ]; then
     else
         # On upgrades, do not enable or disable presets to avoid surprising
         # the user
-        %{_prefix}/sbin/convert-to-edition -ip workstation
+        %{_prefix}/sbin/convert-to-edition -ie workstation
     fi
 fi
 
@@ -397,6 +397,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %changelog
+* Mon Mar  7 2016 Arkady L. Shane <ashejn@russianfedora.ru> - 24-0.11.R
+- Fix typo that breaks %post on upgrades of Workstation and Cloud
+
 * Tue Feb 23 2016 Dennis Gilmore <dennis@ausil.us> - 24-0.10.R
 - setup for f24 being branched
 
