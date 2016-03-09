@@ -13,6 +13,7 @@ License:        MIT
 Group:          System Environment/Base
 URL:            http://fedoraproject.org
 Source:         %{name}-%{version}.tar.bz2
+Source1:	convert-to-edition.lua
 Obsoletes:      redhat-release
 Provides:       redhat-release
 Obsoletes:      fedora-release
