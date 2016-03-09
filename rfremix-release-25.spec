@@ -364,7 +364,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 - Only run grub2-mkconfig for platforms that support it
 - Remove erroneous RPM_BUILD_ROOT variables in convert-to-edition
 
-* Fri Feb 26 2016 Arkady L. Shane <ashejn@russianfedora.ru> - 25-0.2.R
+* Fri Feb 29 2016 Arkady L. Shane <ashejn@russianfedora.ru> - 25-0.2.R
 - Fix typo that breaks %post on upgrades of Workstation and Cloud
 
 * Sun Feb 28 2016 Arkady L. Shane <ashejn@russianfedora.ru> - 25-0.1.1.R
