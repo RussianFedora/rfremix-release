@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        25
-Release:        0.5.R
+Release:        0.7.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -71,14 +71,13 @@ Provides:       system-release-product
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-server
 Requires:       systemd
-Requires:       rolekit
 Requires:       cockpit-bridge
 Requires:       cockpit-networkmanager
 Requires:       cockpit-shell
 Requires:       cockpit-storaged
 Requires:       cockpit-ws
 Requires:       openssh-server
-Requires(post):	sed
+Requires:       rolekit
 Requires(post):	systemd
 
 %description server
@@ -351,6 +350,15 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %changelog
+* Fri Mar 18 2016 Dennis Gilmor <dennis@ausil.us> - 25-0.7.R
+- drop Requires(post): sed
+- Fork to execute systemctl calls
+
+* Tue Mar 15 2016 Dennis Gilmore <dennis@ausil.us> - 25-0.6.R
+- Properly handle systemd presets in Lua scripts
+- enable opal-prd.service
+- Remove call to grub2-mkconfig
+
 * Tue Mar 08 2016 Stephen Gallagher <sgallagh@redhat.com> - 25-0.5.R
 - Add a subpackage for Atomic Host to provide /usr/lib/os-release differences
 
