@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        24
-Release:        0.14.R
+Release:        0.16.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -350,6 +350,13 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %changelog
+* Fri Mar 18 2016 Dennis Gilmore <dennis@ausil.us> - 24-0.16.R
+- Fork to execute systemctl calls
+
+* Tue Mar 15 2016 Dennis Gilmore <dennis@ausil.us> - 24-0.15.R
+- Properly handle systemd presets in Lua scripts
+- convert-to-edition: Remove call to grub2-mkconfig
+
 * Tue Mar 08 2016 Stephen Gallagher <sgallagh@redhat.com> - 24-0.14.R
 - Add a subpackage for Atomic Host to provide /usr/lib/os-release differences
 
