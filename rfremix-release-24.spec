@@ -1,4 +1,4 @@
-%define release_name Rawhide
+%define release_name Twenty Four
 %define dist_version 24
 # validate at 20101017. only increase rfremix_version
 %define rfremix_version 24
