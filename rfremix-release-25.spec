@@ -120,12 +120,11 @@ ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
 # Create the common os-release file
 install -d $RPM_BUILD_ROOT/usr/lib/os.release.d/
 cat << EOF >>$RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora
-NAME=Fedora
-VERSION="%{dist_version} (%{release_name})"
+NAME=RFRemix
+VERSION="%{rfremix_version} (%{release_name})"
 ID=fedora
 ID_LIKE=fedora
-VERSION="%{rfremix_version} (%{release_name})"
-PETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
+PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 VERSION_ID=%{dist_version}
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{dist_version}"
