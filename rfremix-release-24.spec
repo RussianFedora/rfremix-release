@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        24
-Release:        0.16.R
+Release:        0.17.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -349,6 +349,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %changelog
+* Tue Apr 19 2016 Dennis Gilmore <dennis@ausil.us> - 24-0.17.R
+- enable virtlogd.socket
+
 * Fri Mar 18 2016 Dennis Gilmore <dennis@ausil.us> - 24-0.16.R
 - Fork to execute systemctl calls
 
