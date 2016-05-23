@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        24
-Release:        0.17.R
+Release:        0.17.1.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -43,6 +43,7 @@ Summary:        Base package for Fedora Atomic-specific default configurations
 Provides:       system-release-atomichost
 Provides:       system-release-atomichost(%{version})
 Provides:       system-release-product
+Provides:       fedora-release-atomichost = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:      fedora-release-atomichost
 
@@ -55,6 +56,7 @@ Summary:        Base package for RFRemix Cloud-specific default configurations
 Provides:       system-release-cloud
 Provides:       system-release-cloud(%{version})
 Provides:       system-release-product
+Provides:       fedora-release-cloud = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-cloud
 
@@ -67,6 +69,7 @@ Summary:        Base package for RFRemix Server-specific default configurations
 Provides:       system-release-server
 Provides:       system-release-server(%{version})
 Provides:       system-release-product
+Provides:       fedora-release-server = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-server
 Requires:       systemd
@@ -89,6 +92,7 @@ Summary:        Base package for RFRemix Workstation-specific default configurat
 Provides:       system-release-workstation
 Provides:       system-release-workstation(%{version})
 Provides:       system-release-product
+Provides:       fedora-release-workstation = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:	fedora-release-workstation
 # needed for captive portal support
@@ -349,6 +353,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %changelog
+* Mon May 23 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.17.1.R
+- added more provides (fedora-release-...)
+
 * Tue Apr 19 2016 Dennis Gilmore <dennis@ausil.us> - 24-0.17.R
 - enable virtlogd.socket
 
