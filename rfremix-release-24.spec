@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        24
-Release:        0.17.1.R
+Release:        0.17.2.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -16,7 +16,7 @@ Source:         %{name}-%{version}.tar.bz2
 Source1:	convert-to-edition.lua
 Obsoletes:      redhat-release
 Provides:       redhat-release
-Obsoletes:      fedora-release
+#Obsoletes:      fedora-release
 Provides:       fedora-release = %{epoch}:%{version}-%{release}
 Provides:       system-release
 Provides:       system-release(%{version})
@@ -45,7 +45,7 @@ Provides:       system-release-atomichost(%{version})
 Provides:       system-release-product
 Provides:       fedora-release-atomichost = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Obsoletes:      fedora-release-atomichost
+#Obsoletes:      fedora-release-atomichost
 
 %description atomichost
 Provides a base package for Fedora Atomic Host-specific configuration files to
@@ -58,7 +58,7 @@ Provides:       system-release-cloud(%{version})
 Provides:       system-release-product
 Provides:       fedora-release-cloud = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Obsoletes:	fedora-release-cloud
+#Obsoletes:	fedora-release-cloud
 
 %description cloud
 Provides a base package for RFRemix Cloud-specific configuration files to
@@ -71,7 +71,7 @@ Provides:       system-release-server(%{version})
 Provides:       system-release-product
 Provides:       fedora-release-server = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Obsoletes:	fedora-release-server
+#Obsoletes:	fedora-release-server
 Requires:       systemd
 Requires:       cockpit-bridge
 Requires:       cockpit-networkmanager
@@ -94,7 +94,7 @@ Provides:       system-release-workstation(%{version})
 Provides:       system-release-product
 Provides:       fedora-release-workstation = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Obsoletes:	fedora-release-workstation
+#Obsoletes:	fedora-release-workstation
 # needed for captive portal support
 Requires:       NetworkManager-config-connectivity-fedora
 Requires(post): /usr/bin/glib-compile-schemas
@@ -353,6 +353,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %changelog
+* Tue May 24 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.17.2.R
+- drop some obsoletes
+
 * Mon May 23 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.17.1.R
 - added more provides (fedora-release-...)
 
