@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        24
-Release:        0.17.2.R
+Release:        0.17.3.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -16,7 +16,6 @@ Source:         %{name}-%{version}.tar.bz2
 Source1:	convert-to-edition.lua
 Obsoletes:      redhat-release
 Provides:       redhat-release
-#Obsoletes:      fedora-release
 Provides:       fedora-release = %{epoch}:%{version}-%{release}
 Provides:       system-release
 Provides:       system-release(%{version})
@@ -45,7 +44,6 @@ Provides:       system-release-atomichost(%{version})
 Provides:       system-release-product
 Provides:       fedora-release-atomichost = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-#Obsoletes:      fedora-release-atomichost
 
 %description atomichost
 Provides a base package for Fedora Atomic Host-specific configuration files to
@@ -58,7 +56,6 @@ Provides:       system-release-cloud(%{version})
 Provides:       system-release-product
 Provides:       fedora-release-cloud = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-#Obsoletes:	fedora-release-cloud
 
 %description cloud
 Provides a base package for RFRemix Cloud-specific configuration files to
@@ -71,7 +68,6 @@ Provides:       system-release-server(%{version})
 Provides:       system-release-product
 Provides:       fedora-release-server = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-#Obsoletes:	fedora-release-server
 Requires:       systemd
 Requires:       cockpit-bridge
 Requires:       cockpit-networkmanager
@@ -94,7 +90,6 @@ Provides:       system-release-workstation(%{version})
 Provides:       system-release-product
 Provides:       fedora-release-workstation = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-#Obsoletes:	fedora-release-workstation
 # needed for captive portal support
 Requires:       NetworkManager-config-connectivity-fedora
 Requires(post): /usr/bin/glib-compile-schemas
@@ -103,6 +98,41 @@ Requires(postun): /usr/bin/glib-compile-schemas
 %description workstation
 Provides a base package for RFRemix Workstation-specific configuration files to
 depend on.
+
+%package -n fedora-release
+Summary:        Fedora release files
+Requires:	rfremix-release = %{epoch}:%{version}-%{release}
+
+%description -n fedora-release
+This is empty package for compatibility with original fedora-release
+
+%package -n fedora-release-server
+Summary:        Base package for Fedora Server-specific default configurations
+Requires:	rfremix-release-server = %{epoch}:%{version}-%{release}
+
+%description -n fedora-release-server
+This is empty package for compatibility with original fedora-release-server
+
+%package -n fedora-release-workstation
+Summary:        Base package for Fedora Workstation-specific default configurations
+Requires:	rfremix-release-workstation = %{epoch}:%{version}-%{release}
+
+%description -n fedora-release-workstation
+This is empty package for compatibility with original fedora-release-workstation
+
+%package -n fedora-release-cloud
+Summary:        Base package for Fedora Cloud-specific default configurations
+Requires:	rfremix-release-cloud = %{epoch}:%{version}-%{release}
+
+%description -n fedora-release-cloud
+This is empty package for compatibility with original fedora-release-cloud
+
+%package -n fedora-release-atomichost
+Summary:        Base package for Fedora Atomic-specific default configurations
+Requires:	rfremix-release-atomichost = %{epoch}:%{version}-%{release}
+
+%description -n fedora-release-atomichost
+This is empty package for compatibility with original fedora-release-atomichost
 
 %prep
 %setup -q
@@ -352,7 +382,17 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %ghost %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
+%files -n fedora-release
+%files -n fedora-release-server
+%files -n fedora-release-workstation
+%files -n fedora-release-cloud
+%files -n fedora-release-atomichost
+
 %changelog
+* Wed May 25 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.17.3.R
+- added fedora-release* empty packages for compatibility with original
+  Fedora packages
+
 * Tue May 24 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.17.2.R
 - drop some obsoletes
 
