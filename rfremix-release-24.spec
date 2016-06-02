@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        24
-Release:        0.17.3.R
+Release:        1.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -281,9 +281,7 @@ end
 %include %{_sourcedir}/convert-to-edition.lua
 -- If we get to %%posttrans and nothing created /usr/lib/variant, set it to
 -- nonproduct.
-if posix.stat(VARIANT_FILE) == nil then
-    convert_to_edition("nonproduct", true)
-end
+install_edition("nonproduct")
 
 %post atomichost -p <lua>
 %include %{_sourcedir}/convert-to-edition.lua
@@ -389,6 +387,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %files -n fedora-release-atomichost
 
 %changelog
+* Thu Jun  1 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 24-1.R
+- final release
+
 * Wed May 25 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.17.3.R
 - added fedora-release* empty packages for compatibility with original
   Fedora packages
