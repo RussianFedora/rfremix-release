@@ -99,41 +99,6 @@ Requires(postun): /usr/bin/glib-compile-schemas
 Provides a base package for RFRemix Workstation-specific configuration files to
 depend on.
 
-%package -n fedora-release
-Summary:        Fedora release files
-Requires:	rfremix-release = %{epoch}:%{version}-%{release}
-
-%description -n fedora-release
-This is empty package for compatibility with original fedora-release
-
-%package -n fedora-release-server
-Summary:        Base package for Fedora Server-specific default configurations
-Requires:	rfremix-release-server = %{epoch}:%{version}-%{release}
-
-%description -n fedora-release-server
-This is empty package for compatibility with original fedora-release-server
-
-%package -n fedora-release-workstation
-Summary:        Base package for Fedora Workstation-specific default configurations
-Requires:	rfremix-release-workstation = %{epoch}:%{version}-%{release}
-
-%description -n fedora-release-workstation
-This is empty package for compatibility with original fedora-release-workstation
-
-%package -n fedora-release-cloud
-Summary:        Base package for Fedora Cloud-specific default configurations
-Requires:	rfremix-release-cloud = %{epoch}:%{version}-%{release}
-
-%description -n fedora-release-cloud
-This is empty package for compatibility with original fedora-release-cloud
-
-%package -n fedora-release-atomichost
-Summary:        Base package for Fedora Atomic-specific default configurations
-Requires:	rfremix-release-atomichost = %{epoch}:%{version}-%{release}
-
-%description -n fedora-release-atomichost
-This is empty package for compatibility with original fedora-release-atomichost
-
 %prep
 %setup -q
 sed -i 's|@@VERSION@@|%{dist_version}|g' Fedora-Legal-README.txt
@@ -380,15 +345,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %ghost %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
-%files -n fedora-release
-%files -n fedora-release-server
-%files -n fedora-release-workstation
-%files -n fedora-release-cloud
-%files -n fedora-release-atomichost
-
 %changelog
 * Thu Jun  1 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 24-1.R
 - final release
+- drop fedora-release packages
 
 * Wed May 25 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 24-0.17.3.R
 - added fedora-release* empty packages for compatibility with original
