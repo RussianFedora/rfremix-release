@@ -197,7 +197,7 @@ cat >> $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d/macros.dist << EOF
 # dist macros.
 
 %%fedora                %{dist_version}
-%%dist                .fc%{dist_version}.R
+%%dist                .fc%{dist_version}
 %%fc%{dist_version}                1
 EOF
 
