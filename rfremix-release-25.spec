@@ -7,7 +7,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        25
-Release:        0.7.R
+Release:        0.8
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -16,7 +16,6 @@ Source:         %{name}-%{version}.tar.bz2
 Source1:        convert-to-edition.lua
 Obsoletes:      redhat-release
 Provides:       redhat-release
-Obsoletes:      fedora-release
 Provides:       fedora-release = %{epoch}:%{version}-%{release}
 Provides:       system-release
 Provides:       system-release(%{version})
@@ -43,6 +42,7 @@ Summary:        Base package for Fedora Atomic-specific default configurations
 Provides:       system-release-atomichost
 Provides:       system-release-atomichost(%{version})
 Provides:       system-release-product
+Provides:       fedora-release-atomichost = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:      fedora-release-atomichost
 
@@ -50,14 +50,13 @@ Obsoletes:      fedora-release-atomichost
 Provides a base package for Fedora Atomic Host-specific configuration files to
 depend on.
 
-
 %package cloud
 Summary:        Base package for RFRemix Cloud-specific default configurations
 Provides:       system-release-cloud
 Provides:       system-release-cloud(%{version})
 Provides:       system-release-product
+Provides:       fedora-release-cloud = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Obsoletes:	fedora-release-cloud
 
 %description cloud
 Provides a base package for RFRemix Cloud-specific configuration files to
@@ -68,8 +67,8 @@ Summary:        Base package for RFRemix Server-specific default configurations
 Provides:       system-release-server
 Provides:       system-release-server(%{version})
 Provides:       system-release-product
+Provides:       fedora-release-server = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Obsoletes:	fedora-release-server
 Requires:       systemd
 Requires:       cockpit-bridge
 Requires:       cockpit-networkmanager
@@ -89,8 +88,8 @@ Summary:        Base package for RFRemix Workstation-specific default configurat
 Provides:       system-release-workstation
 Provides:       system-release-workstation(%{version})
 Provides:       system-release-product
+Provides:       fedora-release-workstation = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Obsoletes:	fedora-release-workstation
 # needed for captive portal support
 Requires:       NetworkManager-config-connectivity-fedora
 Requires(post): /usr/bin/glib-compile-schemas
@@ -350,6 +349,11 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %changelog
+* Wed Jun 22 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 25-0.8
+- drop .R suffix
+- drop Obsoletes of fedora release packages and added Provides
+- sync with upstream: enable virtlogd.socket
+
 * Fri Mar 18 2016 Dennis Gilmor <dennis@ausil.us> - 25-0.7.R
 - drop Requires(post): sed
 - Fork to execute systemctl calls
