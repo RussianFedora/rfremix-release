@@ -350,7 +350,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 * Fri Jun 24 2016 Dennis Gilmore <dennis@ausil.us> - 25-0.10
 - apply fix from adamw for lua globbing bug rhbz#1349664
 
-* Thu May 19 2016 Stephen Gallagher <sgallagh@redhat.com> - 25-0.9
+* Wed Jun 22 2016 Stephen Gallagher <sgallagh@redhat.com> - 25-0.9
 - Fix %%posttrans to properly write /usr/lib/variant for nonproduct
 
 
