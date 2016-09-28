@@ -1,13 +1,13 @@
-%define release_name Rawhide
+%define release_name Twenty Five
 %define dist_version 25
 # validate at 20101017. only increase rfremix_version
 %define rfremix_version 25
-%define bug_version rawhide
+%define bug_version 25
 
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        25
-Release:        0.10
+Release:        0.11
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -347,6 +347,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %changelog
+* Fri Jul 22 2016 Mohan Boddu <mboddu@redhat.com> - 25-0.11
+- Setup for branching.
+
 * Fri Jun 24 2016 Dennis Gilmore <dennis@ausil.us> - 25-0.10
 - apply fix from adamw for lua globbing bug rhbz#1349664
 
