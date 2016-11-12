@@ -4,14 +4,18 @@
 %define rfremix_version 25
 %define bug_version 25
 
+# All changes need to be submitted as pull requests in pagure
+# The package can only be built by a very small number of people
+# if you are not sure you can build it do not attempt to
+
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        25
-Release:        0.11
+Release:        1.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
-URL:            http://fedoraproject.org
+URL:            http://russianfedora.pro
 Source:         %{name}-%{version}.tar.bz2
 Source1:        convert-to-edition.lua
 Obsoletes:      redhat-release
@@ -98,6 +102,13 @@ Requires(postun): /usr/bin/glib-compile-schemas
 %description workstation
 Provides a base package for RFRemix Workstation-specific configuration files to
 depend on.
+
+%package -n convert-to-edition
+Summary: Script for converting between Fedora Editions
+Requires:       rfremix-release = %{epoch}:%{version}-%{release}
+
+%description -n convert-to-edition
+Provides a script to convert the running system between Fedora Editions
 
 %prep
 %setup -q
@@ -220,7 +231,7 @@ install -m 0644 org.gnome.shell.gschema.override $RPM_BUILD_ROOT%{_datadir}/glib
 
 # Copy the make_edition script to /usr/sbin
 mkdir -p $RPM_BUILD_ROOT/%{_prefix}/sbin/
-install -m 0744 convert-to-edition $RPM_BUILD_ROOT/%{_prefix}/sbin/
+install -m 0755 convert-to-edition $RPM_BUILD_ROOT/%{_prefix}/sbin/
 
 %post -p <lua>
 %include %{_sourcedir}/convert-to-edition.lua
@@ -315,7 +326,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_prefix}/lib/systemd/system-preset/85-display-manager.preset
 %{_prefix}/lib/systemd/system-preset/90-default.preset
 %{_prefix}/lib/systemd/system-preset/99-default-disable.preset
-/usr/sbin/convert-to-edition
 
 
 %files atomichost
@@ -346,7 +356,26 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %ghost %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
+%files -n convert-to-edition
+/usr/sbin/convert-to-edition
+
 %changelog
+* Wed Nov 2 2016 Mohan Boddu <mboddu@redhat.com> - 25-1.R
+- Setup for f25 final
+- snapd timers are enabled by default 
+
+* Mon Oct 31 2016 Dennis Gilmore <dennis@ausil.us> - 25-0.14
+- bump for needed rebuild
+- add note on how to contribute
+
+* Mon Oct 31 2016 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 25-0.13
+- Fix mangled Release tag
+
+* Fri Oct 28 2016 Stephen Gallagher <sgallagh@redhat.com> - 25-0.12
+- Move convert-to-edition to its own subpackage
+- Eliminate circular dependency on bash from the base package
+- Enable switcheroo-control.service
+
 * Fri Jul 22 2016 Mohan Boddu <mboddu@redhat.com> - 25-0.11
 - Setup for branching.
 
