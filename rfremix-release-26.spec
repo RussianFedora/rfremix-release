@@ -4,10 +4,14 @@
 %define rfremix_version 26
 %define bug_version rawhide
 
+# All changes need to be submitted as pull requests in pagure
+# The package can only be built by a very small number of people
+# if you are not sure you can build it do not attempt to
+
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        26
-Release:        0.1
+Release:        0.4
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -98,6 +102,13 @@ Requires(postun): /usr/bin/glib-compile-schemas
 %description workstation
 Provides a base package for RFRemix Workstation-specific configuration files to
 depend on.
+
+%package -n convert-to-edition
+Summary: Script for converting between Fedora Editions
+Requires: fedora-release = %{version}-%{release}
+
+%description -n convert-to-edition
+Provides a script to convert the running system between Fedora Editions
 
 %prep
 %setup -q
@@ -220,7 +231,7 @@ install -m 0644 org.gnome.shell.gschema.override $RPM_BUILD_ROOT%{_datadir}/glib
 
 # Copy the make_edition script to /usr/sbin
 mkdir -p $RPM_BUILD_ROOT/%{_prefix}/sbin/
-install -m 0744 convert-to-edition $RPM_BUILD_ROOT/%{_prefix}/sbin/
+install -m 0755 convert-to-edition $RPM_BUILD_ROOT/%{_prefix}/sbin/
 
 %post -p <lua>
 %include %{_sourcedir}/convert-to-edition.lua
@@ -315,7 +326,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_prefix}/lib/systemd/system-preset/85-display-manager.preset
 %{_prefix}/lib/systemd/system-preset/90-default.preset
 %{_prefix}/lib/systemd/system-preset/99-default-disable.preset
-/usr/sbin/convert-to-edition
 
 
 %files atomichost
@@ -346,7 +356,21 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %ghost %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 %config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
+%files -n convert-to-edition
+/usr/sbin/convert-to-edition
+
 %changelog
+* Mon Oct 31 2016 Dennis Gilmore <dennis@ausil.us> - 26-0.4.R
+- bump for needed rebuild
+
+* Mon Oct 31 2016 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 26-0.3.R
+- Fix mangled Release tag
+
+* Fri Oct 28 2016 Stephen Gallagher <sgallagh@redhat.com> - 26-0.2.R
+- Move convert-to-edition to its own subpackage
+- Eliminate circular dependency on bash from the base package
+- Enable switcheroo-control.service
+
 * Thu Jul 28 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 26-0.1
 - setup for rawhide being f26
 
