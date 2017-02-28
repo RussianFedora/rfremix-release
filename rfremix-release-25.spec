@@ -1,7 +1,7 @@
 %define release_name Twenty Five
 %define dist_version 25
 # validate at 20101017. only increase rfremix_version
-%define rfremix_version 25
+%define rfremix_version 25.1
 %define bug_version 25
 
 # All changes need to be submitted as pull requests in pagure
@@ -11,7 +11,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        25
-Release:        1.R
+Release:        2.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -360,6 +360,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
+* Tue Feb 28 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 25-2.R
+- release RFRemix 25.1
+
 * Wed Nov 2 2016 Mohan Boddu <mboddu@redhat.com> - 25-1.R
 - Setup for f25 final
 - snapd timers are enabled by default 
