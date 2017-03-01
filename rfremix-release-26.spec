@@ -1,8 +1,8 @@
-%define release_name Rawhide
+%define release_name Twenty Six
 %define dist_version 26
 # validate at 20101017. only increase rfremix_version
 %define rfremix_version 26
-%define bug_version rawhide
+%define bug_version 26
 
 # All changes need to be submitted as pull requests in pagure
 # The package can only be built by a very small number of people
@@ -11,7 +11,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        26
-Release:        0.4
+Release:        0.5.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -360,6 +360,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
+* Wed Mar  1 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 26-0.5.R
+- update for branding
+
 * Mon Oct 31 2016 Dennis Gilmore <dennis@ausil.us> - 26-0.4.R
 - bump for needed rebuild
 
