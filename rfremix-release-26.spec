@@ -11,7 +11,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        26
-Release:        0.5.R
+Release:        0.6.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -360,6 +360,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
+* Wed Mar 22 2017 Mohan Boddu <mboddu@redhat.com> - 26-0.6.R
+- Disable systemd-networkd-wait-online.service
+
 * Wed Mar  1 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 26-0.5.R
 - update for branding
 
