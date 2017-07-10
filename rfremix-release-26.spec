@@ -11,8 +11,8 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        26
-Release:        0.7.R
-Epoch:	        2
+Release:        1.R
+Epoch:          2
 License:        MIT
 Group:          System Environment/Base
 URL:            http://fedoraproject.org
@@ -360,6 +360,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
+* Mon Jul 10 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 26-1.R
+- Setup for F26 Final
+- Enable NetworkManager-wait-online.service to match NetworkManager.service
+
 * Wed May 17 2017 Mohan Boddu <mboddu@redhat.com> - 26-0.7.R
 - Enable cups on-demand socket activation
 - Enable ostree-remount on ostree-based systems
