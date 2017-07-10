@@ -11,7 +11,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        26
-Release:        0.7.1.R
+Release:        0.7.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -23,7 +23,6 @@ Provides:       redhat-release
 Provides:       fedora-release = %{epoch}:%{version}-%{release}
 Provides:       system-release
 Provides:       system-release(%{version})
-Conflicts:	fedora-release
 
 # Kill off the fedora-release-nonproduct package
 Provides:       fedora-release-nonproduct = %{epoch}:%{version}
@@ -50,7 +49,6 @@ Provides:       system-release-product
 Provides:       fedora-release-atomichost = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Obsoletes:      fedora-release-atomichost
-Conflicts:	fedora-release-atomichost
 
 %description atomichost
 Provides a base package for Fedora Atomic Host-specific configuration files to
@@ -63,7 +61,6 @@ Provides:       system-release-cloud(%{version})
 Provides:       system-release-product
 Provides:       fedora-release-cloud = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Conflicts:	fedora-release-cloud
 
 %description cloud
 Provides a base package for RFRemix Cloud-specific configuration files to
@@ -76,7 +73,6 @@ Provides:       system-release-server(%{version})
 Provides:       system-release-product
 Provides:       fedora-release-server = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Conflicts:	fedora-release-server
 Requires:       systemd
 Requires:       cockpit-bridge
 Requires:       cockpit-networkmanager
@@ -98,7 +94,6 @@ Provides:       system-release-workstation(%{version})
 Provides:       system-release-product
 Provides:       fedora-release-workstation = %{epoch}:%{version}-%{release}
 Requires:       rfremix-release = %{epoch}:%{version}-%{release}
-Conflicts:	fedora-release-workstation
 # needed for captive portal support
 Requires:       NetworkManager-config-connectivity-fedora
 Requires(post): /usr/bin/glib-compile-schemas
@@ -365,9 +360,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
-* Tue Jun 27 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 26-0.7.1.R
-- added some Conflicts
-
 * Wed May 17 2017 Mohan Boddu <mboddu@redhat.com> - 26-0.7.R
 - Enable cups on-demand socket activation
 - Enable ostree-remount on ostree-based systems
