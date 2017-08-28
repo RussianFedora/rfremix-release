@@ -1,7 +1,7 @@
 %define release_name Rawhide
-%define dist_version 27
+%define dist_version 28
 # validate at 20101017. only increase rfremix_version
-%define rfremix_version 27
+%define rfremix_version 28
 %define bug_version rawhide
 
 # All changes need to be submitted as pull requests in pagure
@@ -10,7 +10,7 @@
 
 Summary:        RFRemix release files
 Name:           rfremix-release
-Version:        27
+Version:        28
 Release:        0.1
 Epoch:	        2
 License:        MIT
@@ -138,12 +138,13 @@ VERSION_ID=%{dist_version}
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{dist_version}"
 HOME_URL="https://fedoraproject.org/"
+SUPPORT_URL="https://fedoraproject.org/wiki/Communicating_and_getting_help"
 BUG_REPORT_URL="https://bugzilla.redhat.com/"
 REDHAT_BUGZILLA_PRODUCT="Fedora"
 REDHAT_BUGZILLA_PRODUCT_VERSION=%{bug_version}
 REDHAT_SUPPORT_PRODUCT="Fedora"
 REDHAT_SUPPORT_PRODUCT_VERSION=%{bug_version}
-PRIVACY_POLICY_URL=https://fedoraproject.org/wiki/Legal:PrivacyPolicy
+PRIVACY_POLICY_URL="https://fedoraproject.org/wiki/Legal:PrivacyPolicy"
 EOF
 
 # Create the common /etc/issue
@@ -360,6 +361,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
+* Mon Aug 28 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 28-0.1.R
+- setup new rawhide branch
+
 * Wed Mar  1 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 27-0.1.R
 - setup new rawhide branch
 
