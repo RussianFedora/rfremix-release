@@ -1,8 +1,8 @@
-%define release_name Rawhide
+%define release_name Twenty Seven
 %define dist_version 27
 # validate at 20101017. only increase rfremix_version
 %define rfremix_version 27
-%define bug_version rawhide
+%define bug_version 27
 
 # All changes need to be submitted as pull requests in pagure
 # The package can only be built by a very small number of people
@@ -11,11 +11,11 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        27
-Release:        0.1
+Release:        0.3.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
-URL:            http://fedoraproject.org
+URL:            http://russianfedora.pro
 Source:         %{name}-%{version}.tar.bz2
 Source1:        convert-to-edition.lua
 Obsoletes:      redhat-release
@@ -360,6 +360,19 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
+* Tue Aug 15 2017 Mohan Boddu <mboddu@redhat.com> - 27-0.3.R
+- Update for Branching
+- Enable NetworkManager-wait-online.service to match NetworkManager.service rawpatchtreeparent
+- Enable Performance Co-Pilot services
+- Enable SSSD Kerberos Credential Cache Server
+
+* Wed May 17 2017 Mohan Boddu <mboddu@redhat.com> - 27-0.2.R
+- Enable the System Security Services Daemon
+- Disable systemd-networkd-wait-online.service
+- Enable cups on-demand socket activation by default
+- Add SUPPORT_URL definition to os-release
+- Enable ostree-remount on ostree-based systems
+
 * Wed Mar  1 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 27-0.1.R
 - setup new rawhide branch
 
