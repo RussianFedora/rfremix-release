@@ -11,7 +11,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        27
-Release:        0.3.R
+Release:        1.R
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -35,7 +35,7 @@ Obsoletes:      fedora-release-standard < 22-0.8
 Obsoletes:      rfremix-release-standard < 22-0.8
 
 
-Requires:       fedora-repos(%{version})
+Requires:       fedora-repos(%{version}) >= 1
 BuildArch:      noarch
 
 %description
@@ -361,6 +361,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
+* Mon Oct 23 2017 Mohan Boddu <mboddu@redhat.com> - 27-1.R
+- Setup for F27 final
+- Enable fedora-readonly.service and fedora-import-state.service
+
 * Tue Aug 15 2017 Mohan Boddu <mboddu@redhat.com> - 27-0.3.R
 - Update for Branching
 - Enable NetworkManager-wait-online.service to match NetworkManager.service rawpatchtreeparent
