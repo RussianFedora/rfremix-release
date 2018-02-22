@@ -1,8 +1,8 @@
-%define release_name Rawhide
+%define release_name Twenty Eight 
 %define dist_version 28
 # validate at 20101017. only increase rfremix_version
 %define rfremix_version 28
-%define bug_version rawhide
+%define bug_version 28
 
 # All changes need to be submitted as pull requests in pagure
 # The package can only be built by a very small number of people
@@ -11,7 +11,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        28
-Release:        0.1
+Release:        0.3
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -208,7 +208,7 @@ cat >> $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d/macros.dist << EOF
 # dist macros.
 
 %%fedora                %{dist_version}
-%%dist                .fc%{dist_version}
+%%dist                %{?distprefix}.fc%{dist_version}
 %%fc%{dist_version}                1
 EOF
 
@@ -308,7 +308,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %ghost /usr/lib/variant
 %dir /usr/lib/os.release.d
 %dir /usr/lib/os.release.d/presets
-%config %attr(0644,root,root) /usr/lib/os.release.d/os-release-fedora
+%attr(0644,root,root) /usr/lib/os.release.d/os-release-fedora
 %ghost /usr/lib/os-release
 /etc/os-release
 %config %attr(0644,root,root) /etc/fedora-release
@@ -316,10 +316,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /etc/redhat-release
 /etc/system-release
 %config %attr(0644,root,root) /etc/system-release-cpe
-%config %attr(0644,root,root) /usr/lib/os.release.d/issue-fedora
+%attr(0644,root,root) /usr/lib/os.release.d/issue-fedora
 %ghost /usr/lib/issue
 %config(noreplace) /etc/issue
-%config %attr(0644,root,root) /usr/lib/issue.net
+%attr(0644,root,root) /usr/lib/issue.net
 %config(noreplace) /etc/issue.net
 %attr(0644,root,root) %{_rpmconfigdir}/macros.d/macros.dist
 %dir /usr/lib/systemd/user-preset/
@@ -332,35 +332,44 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %files atomichost
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
-%config %attr(0644,root,root) /usr/lib/os.release.d/os-release-atomichost
+%attr(0644,root,root) /usr/lib/os.release.d/os-release-atomichost
 
 
 %files cloud
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
-%config %attr(0644,root,root) /usr/lib/os.release.d/os-release-cloud
+%attr(0644,root,root) /usr/lib/os.release.d/os-release-cloud
 
 
 %files server
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
-%config %attr(0644,root,root) /usr/lib/os.release.d/os-release-server
-%config %attr(0644,root,root) /usr/lib/os.release.d/issue-server
+%attr(0644,root,root) /usr/lib/os.release.d/os-release-server
+%attr(0644,root,root) /usr/lib/os.release.d/issue-server
 %ghost %{_prefix}/lib/systemd/system-preset/80-server.preset
-%config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-server.preset
+%attr(0644,root,root) /usr/lib/os.release.d/presets/80-server.preset
 
 %files workstation
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
-%config %attr(0644,root,root) /usr/lib/os.release.d/os-release-workstation
+%attr(0644,root,root) /usr/lib/os.release.d/os-release-workstation
 %{_datadir}/glib-2.0/schemas/org.gnome.shell.gschema.override
 %ghost %{_prefix}/lib/systemd/system-preset/80-workstation.preset
-%config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
+%attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %files -n convert-to-edition
 /usr/sbin/convert-to-edition
 
 %changelog
+* Thu Feb 22 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 28-0.3.R
+- Update for branching
+- Enable akmods.service in presets
+- Fix pattern-match in convert-to-edition.lua
+- Add %{?distprefix} to %{dist}
+
+* Thu Oct 26 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 28-0.2.R
+- Drop %%config from files in /usr
+
 * Mon Aug 28 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 28-0.1.R
 - setup new rawhide branch
 
