@@ -1,7 +1,7 @@
 %define release_name Rawhide
-%define dist_version 28
+%define dist_version 29
 # validate at 20101017. only increase rfremix_version
-%define rfremix_version 28
+%define rfremix_version 29
 %define bug_version rawhide
 
 # All changes need to be submitted as pull requests in pagure
@@ -10,7 +10,7 @@
 
 Summary:        RFRemix release files
 Name:           rfremix-release
-Version:        28
+Version:        29
 Release:        0.1
 Epoch:	        2
 License:        MIT
@@ -208,7 +208,7 @@ cat >> $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d/macros.dist << EOF
 # dist macros.
 
 %%fedora                %{dist_version}
-%%dist                .fc%{dist_version}
+%%dist                %{?distprefix}.fc%{dist_version}
 %%fc%{dist_version}                1
 EOF
 
@@ -308,7 +308,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %ghost /usr/lib/variant
 %dir /usr/lib/os.release.d
 %dir /usr/lib/os.release.d/presets
-%config %attr(0644,root,root) /usr/lib/os.release.d/os-release-fedora
+%attr(0644,root,root) /usr/lib/os.release.d/os-release-fedora
 %ghost /usr/lib/os-release
 /etc/os-release
 %config %attr(0644,root,root) /etc/fedora-release
@@ -316,10 +316,10 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /etc/redhat-release
 /etc/system-release
 %config %attr(0644,root,root) /etc/system-release-cpe
-%config %attr(0644,root,root) /usr/lib/os.release.d/issue-fedora
+%attr(0644,root,root) /usr/lib/os.release.d/issue-fedora
 %ghost /usr/lib/issue
 %config(noreplace) /etc/issue
-%config %attr(0644,root,root) /usr/lib/issue.net
+%attr(0644,root,root) /usr/lib/issue.net
 %config(noreplace) /etc/issue.net
 %attr(0644,root,root) %{_rpmconfigdir}/macros.d/macros.dist
 %dir /usr/lib/systemd/user-preset/
@@ -332,93 +332,34 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %files atomichost
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
-%config %attr(0644,root,root) /usr/lib/os.release.d/os-release-atomichost
+%attr(0644,root,root) /usr/lib/os.release.d/os-release-atomichost
 
 
 %files cloud
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
-%config %attr(0644,root,root) /usr/lib/os.release.d/os-release-cloud
+%attr(0644,root,root) /usr/lib/os.release.d/os-release-cloud
 
 
 %files server
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
-%config %attr(0644,root,root) /usr/lib/os.release.d/os-release-server
-%config %attr(0644,root,root) /usr/lib/os.release.d/issue-server
+%attr(0644,root,root) /usr/lib/os.release.d/os-release-server
+%attr(0644,root,root) /usr/lib/os.release.d/issue-server
 %ghost %{_prefix}/lib/systemd/system-preset/80-server.preset
-%config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-server.preset
+%attr(0644,root,root) /usr/lib/os.release.d/presets/80-server.preset
 
 %files workstation
 %{!?_licensedir:%global license %%doc}
 %license LICENSE
-%config %attr(0644,root,root) /usr/lib/os.release.d/os-release-workstation
+%attr(0644,root,root) /usr/lib/os.release.d/os-release-workstation
 %{_datadir}/glib-2.0/schemas/org.gnome.shell.gschema.override
 %ghost %{_prefix}/lib/systemd/system-preset/80-workstation.preset
-%config %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
+%attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
 
 %files -n convert-to-edition
 /usr/sbin/convert-to-edition
 
 %changelog
-* Mon Aug 28 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 28-0.1.R
-- setup new rawhide branch
-
-* Wed Mar  1 2017 Arkady L. Shane <ashejn@russianfedora.pro> - 27-0.1.R
-- setup new rawhide branch
-
-* Mon Oct 31 2016 Dennis Gilmore <dennis@ausil.us> - 26-0.4.R
-- bump for needed rebuild
-
-* Mon Oct 31 2016 Zbigniew Jędrzejewski-Szmek <zbyszek@in.waw.pl> - 26-0.3.R
-- Fix mangled Release tag
-
-* Fri Oct 28 2016 Stephen Gallagher <sgallagh@redhat.com> - 26-0.2.R
-- Move convert-to-edition to its own subpackage
-- Eliminate circular dependency on bash from the base package
-- Enable switcheroo-control.service
-
-* Thu Jul 28 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 26-0.1
-- setup for rawhide being f26
-
-* Fri Jun 24 2016 Dennis Gilmore <dennis@ausil.us> - 25-0.10
-- apply fix from adamw for lua globbing bug rhbz#1349664
-
-* Wed Jun 22 2016 Stephen Gallagher <sgallagh@redhat.com> - 25-0.9
-- Fix %%posttrans to properly write /usr/lib/variant for nonproduct
-
-
-* Wed Jun 22 2016 Arkady L. Shane <ashejn@russianfedora.pro> - 25-0.8
-- drop .R suffix
-- drop Obsoletes of fedora release packages and added Provides
-- sync with upstream: enable virtlogd.socket
-
-* Fri Mar 18 2016 Dennis Gilmor <dennis@ausil.us> - 25-0.7.R
-- drop Requires(post): sed
-- Fork to execute systemctl calls
-
-* Tue Mar 15 2016 Dennis Gilmore <dennis@ausil.us> - 25-0.6.R
-- Properly handle systemd presets in Lua scripts
-- enable opal-prd.service
-- Remove call to grub2-mkconfig
-
-* Tue Mar 08 2016 Stephen Gallagher <sgallagh@redhat.com> - 25-0.5.R
-- Add a subpackage for Atomic Host to provide /usr/lib/os-release differences
-
-* Thu Mar 03 2016 Stephen Gallagher <sgallagh@redhat.com> - 25-0.4.R
-- Rewrite scriptlets in Lua to avoid a circular dependency on coreutils
-- Be more specific with fedora-release-server's Cockpit requirement
-  (Do not pull in all of the optional Cockpit components as mandatory)
-
-* Mon Feb 29 2016 Stephen Gallagher <sgallagh@redhat.com> - 25-0.3.R
-- Only run grub2-mkconfig for platforms that support it
-- Remove erroneous RPM_BUILD_ROOT variables in convert-to-edition
-
-* Fri Feb 29 2016 Arkady L. Shane <ashejn@russianfedora.ru> - 25-0.2.R
-- Fix typo that breaks %post on upgrades of Workstation and Cloud
-
-* Sun Feb 28 2016 Arkady L. Shane <ashejn@russianfedora.ru> - 25-0.1.1.R
-- fix version
-
-* Thu Feb 25 2016 Arkady L. Shane <ashejn@russianfedora.ru> - 25-0.1.R
-- setup for rawhide being f25
+* Thu Feb 22 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 29-0.1.R
+- setup new rawhide branch RFRemix 29
