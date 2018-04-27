@@ -11,7 +11,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        28
-Release:        0.3
+Release:        1
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -135,6 +135,7 @@ ID=fedora
 ID_LIKE=fedora
 PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 VERSION_ID=%{dist_version}
+PLATFORM_ID="platform:f%{dist_version}"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{dist_version}"
 HOME_URL="https://fedoraproject.org/"
@@ -229,6 +230,8 @@ install -m 0644 80-workstation.preset $RPM_BUILD_ROOT%{_prefix}/lib/os.release.d
 # Override the list of enabled gnome-shell extensions for Workstation
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/glib-2.0/schemas/
 install -m 0644 org.gnome.shell.gschema.override $RPM_BUILD_ROOT%{_datadir}/glib-2.0/schemas/
+mkdir -p $RPM_BUILD_ROOT%{_datadir}/polkit-1/rules.d/
+install -m 0644 org.projectatomic.rpmostree1.rules $RPM_BUILD_ROOT%{_datadir}/polkit-1/rules.d/
 
 # Copy the make_edition script to /usr/sbin
 mkdir -p $RPM_BUILD_ROOT/%{_prefix}/sbin/
@@ -356,11 +359,17 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %{_datadir}/glib-2.0/schemas/org.gnome.shell.gschema.override
 %ghost %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
+%attr(0644,root,root) /usr/share/polkit-1/rules.d/org.projectatomic.rpmostree1.rules
 
 %files -n convert-to-edition
 /usr/sbin/convert-to-edition
 
 %changelog
+* Fri Apr 27 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 28-1.R
+- Setup for RFRemix 28 Final
+- Add PLATFORM_ID to /etc/os-release
+- Enable the virtualbox-guest-additions service (vboxservice.service)
+
 * Thu Feb 22 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 28-0.3.R
 - Update for branching
 - Enable akmods.service in presets
