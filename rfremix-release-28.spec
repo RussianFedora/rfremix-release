@@ -10,7 +10,7 @@
 
 Summary:        RFRemix release files
 Name:           rfremix-release
-Version:        28
+Version:        28.1
 Release:        1
 Epoch:	        2
 License:        MIT
