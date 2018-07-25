@@ -1,7 +1,7 @@
 %define release_name Twenty Eight 
 %define dist_version 28
 # validate at 20101017. only increase rfremix_version
-%define rfremix_version 28
+%define rfremix_version 28.1
 %define bug_version 28
 
 # All changes need to be submitted as pull requests in pagure
@@ -365,6 +365,9 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
+* Wed Jul 25 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 28.1-1.R
+- Ok. Release 28.1 version with system updates
+
 * Fri Apr 27 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 28-1.R
 - Setup for RFRemix 28 Final
 - Add PLATFORM_ID to /etc/os-release
