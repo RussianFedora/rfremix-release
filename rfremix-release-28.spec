@@ -1,6 +1,7 @@
 %define release_name Twenty Eight 
 %define dist_version 28
-# validate at 20101017. only increase rfremix_version
+# validate at 20101017. only increase rfremix_version and bump release
+# not version
 %define rfremix_version 28.1
 %define bug_version 28
 
@@ -10,8 +11,8 @@
 
 Summary:        RFRemix release files
 Name:           rfremix-release
-Version:        28.1
-Release:        1
+Version:        28
+Release:        2
 Epoch:	        2
 License:        MIT
 Group:          System Environment/Base
@@ -365,7 +366,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
-* Wed Jul 25 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 28.1-1.R
+* Wed Jul 25 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 28-2.R
 - Ok. Release 28.1 version with system updates
 
 * Fri Apr 27 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 28-1.R
