@@ -1,7 +1,7 @@
 %define release_name Rawhide
-%define dist_version 29
+%define dist_version 30
 # validate at 20101017. only increase rfremix_version
-%define rfremix_version 29
+%define rfremix_version 30
 %define bug_version rawhide
 
 # The package can only be built by a very small number of people
@@ -9,8 +9,8 @@
 
 Summary:        RFRemix release files
 Name:           rfremix-release
-Version:        29
-Release:        0.12
+Version:        30
+Release:        0.4
 Epoch:          2
 License:        MIT
 Group:          System Environment/Base
@@ -354,5 +354,5 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
-* Mon Aug 20 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 29-0.12.R
-- branch RFRemix 29
+* Mon Aug 20 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 30-0.4
+- new Rawhide
