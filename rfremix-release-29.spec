@@ -1,8 +1,8 @@
-%define release_name Rawhide
+%define release_name Twenty Nine
 %define dist_version 29
 # validate at 20101017. only increase rfremix_version
 %define rfremix_version 29
-%define bug_version rawhide
+%define bug_version 29
 
 # The package can only be built by a very small number of people
 # if you are not sure you can build it do not attempt to
