@@ -4,36 +4,37 @@
 %define rfremix_version 29
 %define bug_version rawhide
 
-# All changes need to be submitted as pull requests in pagure
 # The package can only be built by a very small number of people
 # if you are not sure you can build it do not attempt to
 
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        29
-Release:        0.1
-Epoch:	        2
+Release:        0.12
+Epoch:          2
 License:        MIT
 Group:          System Environment/Base
 URL:            http://fedoraproject.org
-Source:         %{name}-%{version}.tar.bz2
-Source1:        convert-to-edition.lua
+
+Source1:        LICENSE
+Source2:        Fedora-Legal-README.txt
+Source3:        convert-to-edition
+Source4:        convert-to-edition.lua
+
+Source10:       85-display-manager.preset
+Source11:       90-default.preset
+Source12:       90-default-user.preset
+Source13:       99-default-disable.preset
+Source14:       80-server.preset
+Source15:       80-workstation.preset
+Source16:       org.gnome.shell.gschema.override
+Source17:       org.projectatomic.rpmostree1.rules
+
 Obsoletes:      redhat-release
 Provides:       redhat-release
 Provides:       fedora-release = %{epoch}:%{version}-%{release}
 Provides:       system-release
 Provides:       system-release(%{version})
-
-# Kill off the fedora-release-nonproduct package
-Provides:       fedora-release-nonproduct = %{epoch}:%{version}
-Provides:       rfremix-release-nonproduct = %{epoch}:%{version}
-Obsoletes:      fedora-release-nonproduct <= 23-0.3
-Obsoletes:      rfremix-release-nonproduct <= 23-0.3
-Provides:       fedora-release-standard = 22-0.8
-Provides:       rfremix-release-standard = 22-0.8
-Obsoletes:      fedora-release-standard < 22-0.8
-Obsoletes:      rfremix-release-standard < 22-0.8
-
 
 Requires:       fedora-repos(%{version})
 BuildArch:      noarch
@@ -80,7 +81,7 @@ Requires:       cockpit-shell
 Requires:       cockpit-storaged
 Requires:       cockpit-ws
 Requires:       openssh-server
-Requires:       rolekit
+
 Requires(post):	systemd
 
 %description server
@@ -111,24 +112,23 @@ Requires: fedora-release = %{version}-%{release}
 Provides a script to convert the running system between Fedora Editions
 
 %prep
-%setup -q
-sed -i 's|@@VERSION@@|%{dist_version}|g' Fedora-Legal-README.txt
+sed -i 's|@@VERSION@@|%{dist_version}|g' %{SOURCE2}
 
 %build
 
 %install
-install -d $RPM_BUILD_ROOT/etc
-echo "Fedora release %{version} (%{release_name})" > $RPM_BUILD_ROOT/etc/fedora-release
-echo "RFRemix release %{rfremix_version} (%{release_name})" > $RPM_BUILD_ROOT/etc/rfremix-release
-echo "cpe:/o:fedoraproject:fedora:%{version}" > $RPM_BUILD_ROOT/etc/system-release-cpe
+install -d %{buildroot}/etc
+echo "Fedora release %{version} (%{release_name})" > %{buildroot}/etc/fedora-release
+echo "RFRemix release %{rfremix_version} (%{release_name})" > %{buildroot}/etc/rfremix-release
+echo "cpe:/o:fedoraproject:fedora:%{version}" > %{buildroot}/etc/system-release-cpe
 
 # Symlink the -release files
-ln -s fedora-release $RPM_BUILD_ROOT/etc/redhat-release
-ln -s fedora-release $RPM_BUILD_ROOT/etc/system-release
+ln -s fedora-release %{buildroot}/etc/redhat-release
+ln -s fedora-release %{buildroot}/etc/system-release
 
 # Create the common os-release file
-install -d $RPM_BUILD_ROOT/usr/lib/os.release.d/
-cat << EOF >>$RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora
+install -d %{buildroot}/usr/lib/os.release.d/
+cat << EOF >>%{buildroot}/usr/lib/os.release.d/os-release-fedora
 NAME=RFRemix
 VERSION="%{rfremix_version} (%{release_name})"
 ID=fedora
@@ -148,63 +148,63 @@ PRIVACY_POLICY_URL="https://fedoraproject.org/wiki/Legal:PrivacyPolicy"
 EOF
 
 # Create the common /etc/issue
-echo "\S" > $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-fedora
-echo "Kernel \r on an \m (\l)" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-fedora
-echo >> $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-fedora
+echo "\S" > %{buildroot}/usr/lib/os.release.d/issue-fedora
+echo "Kernel \r on an \m (\l)" >> %{buildroot}/usr/lib/os.release.d/issue-fedora
+echo >> %{buildroot}/usr/lib/os.release.d/issue-fedora
 
 # Create /etc/issue.net
-echo "\S" > $RPM_BUILD_ROOT/usr/lib/issue.net
-echo "Kernel \r on an \m (\l)" >> $RPM_BUILD_ROOT/usr/lib/issue.net
-ln -s ../usr/lib/issue.net $RPM_BUILD_ROOT/etc/issue.net
+echo "\S" > %{buildroot}/usr/lib/issue.net
+echo "Kernel \r on an \m (\l)" >> %{buildroot}/usr/lib/issue.net
+ln -s ../usr/lib/issue.net %{buildroot}/etc/issue.net
 
 # Create os-release and issue files for the different editions
 
 # Atomic Host - https://bugzilla.redhat.com/show_bug.cgi?id=1200122
-cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora \
-      $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-atomichost
-echo "VARIANT=\"Atomic Host\"" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-atomichost
-echo "VARIANT_ID=atomic.host" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-atomichost
-sed -i -e "s|(%{release_name})|(Atomic Host)|g" $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-atomichost
+cp -p %{buildroot}/usr/lib/os.release.d/os-release-fedora \
+      %{buildroot}/usr/lib/os.release.d/os-release-atomichost
+echo "VARIANT=\"Atomic Host\"" >> %{buildroot}/usr/lib/os.release.d/os-release-atomichost
+echo "VARIANT_ID=atomic.host" >> %{buildroot}/usr/lib/os.release.d/os-release-atomichost
+sed -i -e "s|(%{release_name})|(Atomic Host)|g" %{buildroot}/usr/lib/os.release.d/os-release-atomichost
 
 # Cloud
-cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora \
-      $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-cloud
-echo "VARIANT=\"Cloud Edition\"" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-cloud
-echo "VARIANT_ID=cloud" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-cloud
-sed -i -e "s|(%{release_name})|(Cloud Edition)|g" $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-cloud
+cp -p %{buildroot}/usr/lib/os.release.d/os-release-fedora \
+      %{buildroot}/usr/lib/os.release.d/os-release-cloud
+echo "VARIANT=\"Cloud Edition\"" >> %{buildroot}/usr/lib/os.release.d/os-release-cloud
+echo "VARIANT_ID=cloud" >> %{buildroot}/usr/lib/os.release.d/os-release-cloud
+sed -i -e "s|(%{release_name})|(Cloud Edition)|g" %{buildroot}/usr/lib/os.release.d/os-release-cloud
 
 # Server
-cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora \
-      $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-server
-echo "VARIANT=\"Server Edition\"" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-server
-echo "VARIANT_ID=server" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-server
-sed -i -e "s|(%{release_name})|(Server Edition)|g" $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-server
+cp -p %{buildroot}/usr/lib/os.release.d/os-release-fedora \
+      %{buildroot}/usr/lib/os.release.d/os-release-server
+echo "VARIANT=\"Server Edition\"" >> %{buildroot}/usr/lib/os.release.d/os-release-server
+echo "VARIANT_ID=server" >> %{buildroot}/usr/lib/os.release.d/os-release-server
+sed -i -e "s|(%{release_name})|(Server Edition)|g" %{buildroot}/usr/lib/os.release.d/os-release-server
 
-cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-fedora \
-      $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-server
-echo "Admin Console: https://\4:9090/ or https://[\6]:9090/" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-server
-echo >> $RPM_BUILD_ROOT/usr/lib/os.release.d/issue-server
+cp -p %{buildroot}/usr/lib/os.release.d/issue-fedora \
+      %{buildroot}/usr/lib/os.release.d/issue-server
+echo "Admin Console: https://\4:9090/ or https://[\6]:9090/" >> %{buildroot}/usr/lib/os.release.d/issue-server
+echo >> %{buildroot}/usr/lib/os.release.d/issue-server
 
 # Workstation
-cp -p $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-fedora \
-      $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-workstation
-echo "VARIANT=\"Workstation Edition\"" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-workstation
-echo "VARIANT_ID=workstation" >> $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-workstation
-sed -i -e "s|(%{release_name})|(Workstation Edition)|g" $RPM_BUILD_ROOT/usr/lib/os.release.d/os-release-workstation
+cp -p %{buildroot}/usr/lib/os.release.d/os-release-fedora \
+      %{buildroot}/usr/lib/os.release.d/os-release-workstation
+echo "VARIANT=\"Workstation Edition\"" >> %{buildroot}/usr/lib/os.release.d/os-release-workstation
+echo "VARIANT_ID=workstation" >> %{buildroot}/usr/lib/os.release.d/os-release-workstation
+sed -i -e "s|(%{release_name})|(Workstation Edition)|g" %{buildroot}/usr/lib/os.release.d/os-release-workstation
 
 # Create the symlink for /etc/os-release
 # We don't create the /usr/lib/os-release symlink until %%post
 # so that we can ensure that the right one is referenced.
-ln -s ../usr/lib/os-release $RPM_BUILD_ROOT/etc/os-release
+ln -s ../usr/lib/os-release %{buildroot}/etc/os-release
 
 # Create the symlink for /etc/issue
 # We don't create the /usr/lib/os-release symlink until %%post
 # so that we can ensure that the right one is referenced.
-ln -s ../usr/lib/issue $RPM_BUILD_ROOT/etc/issue
+ln -s ../usr/lib/issue %{buildroot}/etc/issue
 
 # Set up the dist tag macros
-install -d -m 755 $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d
-cat >> $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d/macros.dist << EOF
+install -d -m 755 %{buildroot}%{_rpmconfigdir}/macros.d
+cat >> %{buildroot}%{_rpmconfigdir}/macros.d/macros.dist << EOF
 # dist macros.
 
 %%fedora                %{dist_version}
@@ -212,30 +212,31 @@ cat >> $RPM_BUILD_ROOT%{_rpmconfigdir}/macros.d/macros.dist << EOF
 %%fc%{dist_version}                1
 EOF
 
-# Add presets
-mkdir -p $RPM_BUILD_ROOT/usr/lib/systemd/user-preset/
-mkdir -p $RPM_BUILD_ROOT%{_prefix}/lib/systemd/system-preset/
-mkdir -p $RPM_BUILD_ROOT/usr/lib/os.release.d/presets
+# Install licenses
+install -d %{buildroot}%{_datadir}/licenses/%{name}/
+install -pm 0644 %{SOURCE1} %{buildroot}%{_datadir}/licenses/%{name}/LICENSE
+install -pm 0644 %{SOURCE2} %{buildroot}%{_datadir}/licenses/%{name}/Fedora-Legal-README.txt
 
 # Default system wide
-install -m 0644 85-display-manager.preset $RPM_BUILD_ROOT%{_prefix}/lib/systemd/system-preset/
-install -m 0644 90-default.preset $RPM_BUILD_ROOT%{_prefix}/lib/systemd/system-preset/
-install -m 0644 99-default-disable.preset $RPM_BUILD_ROOT%{_prefix}/lib/systemd/system-preset/
+install -Dm0644 %{SOURCE10} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
+install -Dm0644 %{SOURCE11} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
+install -Dm0644 %{SOURCE12} -t %{buildroot}/usr/lib/systemd/user-preset/
+install -Dm0644 %{SOURCE13} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
+
 # RFRemix Server
-install -m 0644 80-server.preset $RPM_BUILD_ROOT%{_prefix}/lib/os.release.d/presets/
+install -Dm0644 %{SOURCE14} -t %{buildroot}%{_prefix}/lib/os.release.d/presets/
 # RFRemix Workstation
-install -m 0644 80-workstation.preset $RPM_BUILD_ROOT%{_prefix}/lib/os.release.d/presets/
+install -Dm0644 %{SOURCE15} -t %{buildroot}%{_prefix}/lib/os.release.d/presets/
 
 # Override the list of enabled gnome-shell extensions for Workstation
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/glib-2.0/schemas/
-install -m 0644 org.gnome.shell.gschema.override $RPM_BUILD_ROOT%{_datadir}/glib-2.0/schemas/
+install -Dm0644 %{SOURCE16} -t %{buildroot}%{_datadir}/glib-2.0/schemas/
+install -Dm0644 %{SOURCE17} -t %{buildroot}%{_datadir}/polkit-1/rules.d/
 
 # Copy the make_edition script to /usr/sbin
-mkdir -p $RPM_BUILD_ROOT/%{_prefix}/sbin/
-install -m 0755 convert-to-edition $RPM_BUILD_ROOT/%{_prefix}/sbin/
+install -Dm0755 %{SOURCE3} -t %{buildroot}/%{_prefix}/sbin/
 
 %post -p <lua>
-%include %{_sourcedir}/convert-to-edition.lua
+%include %{SOURCE4}
 -- On initial installation, we'll at least temporarily put the non-product
 -- symlinks in place. It will be overridden by fedora-release-$EDITION
 -- %%post sections because we don't write the /usr/lib/variant file until
@@ -255,41 +256,41 @@ if read_variant() == "nonproduct" then
 end
 
 %posttrans -p <lua>
-%include %{_sourcedir}/convert-to-edition.lua
+%include %{SOURCE4}
 -- If we get to %%posttrans and nothing created /usr/lib/variant, set it to
 -- nonproduct.
 install_edition("nonproduct")
 
 %post atomichost -p <lua>
-%include %{_sourcedir}/convert-to-edition.lua
+%include %{SOURCE4}
 install_edition("atomichost")
 
 %preun atomichost -p <lua>
-%include %{_sourcedir}/convert-to-edition.lua
+%include %{SOURCE4}
 uninstall_edition("atomichost")
 
 %post cloud -p <lua>
-%include %{_sourcedir}/convert-to-edition.lua
+%include %{SOURCE4}
 install_edition("cloud")
 
 %preun cloud -p <lua>
-%include %{_sourcedir}/convert-to-edition.lua
+%include %{SOURCE4}
 uninstall_edition("cloud")
 
 %post server -p <lua>
-%include %{_sourcedir}/convert-to-edition.lua
+%include %{SOURCE4}
 install_edition("server")
 
 %preun server -p <lua>
-%include %{_sourcedir}/convert-to-edition.lua
+%include %{SOURCE4}
 uninstall_edition("server")
 
 %post workstation -p <lua>
-%include %{_sourcedir}/convert-to-edition.lua
+%include %{SOURCE4}
 install_edition("workstation")
 
 %preun workstation -p <lua>
-%include %{_sourcedir}/convert-to-edition.lua
+%include %{SOURCE4}
 uninstall_edition("workstation")
 
 %postun workstation
@@ -302,8 +303,6 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 
 %files
-%defattr(-,root,root,-)
-%{!?_licensedir:%global license %%doc}
 %license LICENSE Fedora-Legal-README.txt
 %ghost /usr/lib/variant
 %dir /usr/lib/os.release.d
@@ -323,6 +322,7 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 %config(noreplace) /etc/issue.net
 %attr(0644,root,root) %{_rpmconfigdir}/macros.d/macros.dist
 %dir /usr/lib/systemd/user-preset/
+%{_prefix}/lib/systemd/user-preset/90-default-user.preset
 %dir %{_prefix}/lib/systemd/system-preset/
 %{_prefix}/lib/systemd/system-preset/85-display-manager.preset
 %{_prefix}/lib/systemd/system-preset/90-default.preset
@@ -330,36 +330,29 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 
 
 %files atomichost
-%{!?_licensedir:%global license %%doc}
-%license LICENSE
 %attr(0644,root,root) /usr/lib/os.release.d/os-release-atomichost
 
 
 %files cloud
-%{!?_licensedir:%global license %%doc}
-%license LICENSE
 %attr(0644,root,root) /usr/lib/os.release.d/os-release-cloud
 
 
 %files server
-%{!?_licensedir:%global license %%doc}
-%license LICENSE
 %attr(0644,root,root) /usr/lib/os.release.d/os-release-server
 %attr(0644,root,root) /usr/lib/os.release.d/issue-server
 %ghost %{_prefix}/lib/systemd/system-preset/80-server.preset
 %attr(0644,root,root) /usr/lib/os.release.d/presets/80-server.preset
 
 %files workstation
-%{!?_licensedir:%global license %%doc}
-%license LICENSE
 %attr(0644,root,root) /usr/lib/os.release.d/os-release-workstation
 %{_datadir}/glib-2.0/schemas/org.gnome.shell.gschema.override
 %ghost %{_prefix}/lib/systemd/system-preset/80-workstation.preset
 %attr(0644,root,root) /usr/lib/os.release.d/presets/80-workstation.preset
+%attr(0644,root,root) /usr/share/polkit-1/rules.d/org.projectatomic.rpmostree1.rules
 
 %files -n convert-to-edition
 /usr/sbin/convert-to-edition
 
 %changelog
-* Thu Feb 22 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 29-0.1.R
-- setup new rawhide branch RFRemix 29
+* Mon Aug 20 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 29-0.12.R
+- branch RFRemix 29
