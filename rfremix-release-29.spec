@@ -10,7 +10,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        29
-Release:        0.16
+Release:        0.17
 Epoch:          2
 License:        MIT
 Group:          System Environment/Base
@@ -603,6 +603,9 @@ uninstall_edition("xfce")
 %attr(0644,root,root) /usr/lib/os.release.d/os-release-xfce
 
 %changelog
+* Fri Sep 14 2018 Mohan Boddu <mboddu@bhujji.com> 29-0.17.R
+- Enable the stratis daemon for managing stratis storage
+
 * Fri Sep 14 2018 Mohan Boddu <mboddu@bhujji.com> 29-0.16.R
 - Set cpi.service as enabled in the systemd presets
 - Set device_cio_free service as enabled
