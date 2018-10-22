@@ -10,7 +10,7 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        30
-Release:        0.4
+Release:        0.5
 Epoch:          2
 License:        MIT
 Group:          System Environment/Base
@@ -135,6 +135,7 @@ ID=fedora
 ID_LIKE=fedora
 PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 VERSION_ID=%{dist_version}
+PLATFORM_ID="platform:f%{dist_version}"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{dist_version}"
 HOME_URL="https://fedoraproject.org/"
@@ -354,5 +355,8 @@ glib-compile-schemas %{_datadir}/glib-2.0/schemas &> /dev/null || :
 /usr/sbin/convert-to-edition
 
 %changelog
+* Mon Oct 22 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 30-0.5
+- Add PLATFORM_ID
+
 * Mon Aug 20 2018 Arkady L. Shane <ashejn@russianfedora.pro> - 30-0.4
 - new Rawhide
