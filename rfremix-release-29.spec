@@ -10,11 +10,10 @@
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        29
-Release:        0.17
+Release:        0.18
 Epoch:          2
 License:        MIT
-Group:          System Environment/Base
-URL:            http://fedoraproject.org
+URL:            https://fedoraproject.org/
 
 Source1:        LICENSE
 Source2:        Fedora-Legal-README.txt
@@ -41,7 +40,8 @@ Requires:       fedora-repos(%{version})
 BuildArch:      noarch
 
 %description
-RFRemix release files such as various /etc/ files that define the release.
+RFRemix release files such as various /etc/ files that define the release
+and systemd preset files that determine which services are enabled by default.
 
 %package atomichost
 Summary:        Base package for RFremix Atomic-specific default configurations
@@ -206,13 +206,6 @@ Requires:       rfremix-release = %{epoch}:%{version}-%{release}
 Provides a base package for RFRemix Xfce specific configuration files to
 depend on as well as Xfce system defaults.
 
-%package -n convert-to-edition
-Summary: Script for converting between Fedora Editions
-Requires: fedora-release = %{version}-%{release}
-
-%description -n convert-to-edition
-Provides a script to convert the running system between Fedora Editions
-
 %prep
 sed -i 's|@@VERSION@@|%{dist_version}|g' %{SOURCE2}
 
@@ -234,9 +227,9 @@ cat << EOF >>%{buildroot}/usr/lib/os.release.d/os-release-fedora
 NAME=RFRemix
 VERSION="%{rfremix_version} (%{release_name})"
 ID=fedora
-ID_LIKE=fedora
-PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 VERSION_ID=%{dist_version}
+PLATFORM_ID="platform:f%{dist_version}"
+PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{dist_version}"
 HOME_URL="https://fedoraproject.org/"
@@ -364,7 +357,7 @@ cat >> %{buildroot}%{_rpmconfigdir}/macros.d/macros.dist << EOF
 # dist macros.
 
 %%fedora                %{dist_version}
-%%dist                %{?distprefix}.fc%{dist_version}
+%%dist                %%{?distprefix}.fc%{dist_version}
 %%fc%{dist_version}                1
 EOF
 
@@ -379,18 +372,18 @@ install -Dm0644 %{SOURCE11} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 install -Dm0644 %{SOURCE12} -t %{buildroot}/usr/lib/systemd/user-preset/
 install -Dm0644 %{SOURCE13} -t %{buildroot}%{_prefix}/lib/systemd/system-preset/
 
-# RFRemix Server
-install -Dm0644 %{SOURCE14} -t %{buildroot}%{_prefix}/lib/os.release.d/presets/
-
 # RFRemix IoT
 install -Dm0644 %{SOURCE18} -t %{buildroot}%{_prefix}/lib/os.release.d/presets/
 
+# RFRemix Server
+install -Dm0644 %{SOURCE14} -t %{buildroot}%{_prefix}/lib/os.release.d/presets/
 # RFRemix Workstation
 install -Dm0644 %{SOURCE15} -t %{buildroot}%{_prefix}/lib/os.release.d/presets/
 
 # Override the list of enabled gnome-shell extensions for Workstation
 install -Dm0644 %{SOURCE16} -t %{buildroot}%{_datadir}/glib-2.0/schemas/
 install -Dm0644 %{SOURCE17} -t %{buildroot}%{_datadir}/polkit-1/rules.d/
+
 
 %post -p <lua>
 %include %{SOURCE4}
@@ -603,6 +596,9 @@ uninstall_edition("xfce")
 %attr(0644,root,root) /usr/lib/os.release.d/os-release-xfce
 
 %changelog
+* Mon Oct 22 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 29-0.18.R
+- Sync with Fedora
+
 * Fri Sep 14 2018 Mohan Boddu <mboddu@bhujji.com> 29-0.17.R
 - Enable the stratis daemon for managing stratis storage
 
