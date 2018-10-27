@@ -601,7 +601,7 @@ uninstall_edition("xfce")
 %attr(0644,root,root) /usr/lib/os.release.d/os-release-xfce
 
 %changelog
-* Sun Oct 14 2018 Mohan Boddu <mboddu@bhujji.com> 29-1
+* Sat Oct 27 2018 Mohan Boddu <mboddu@bhujji.com> 29-1
 - Setup for F29 Final
 - Add DOCUMENTATION_URL to os-release
 
