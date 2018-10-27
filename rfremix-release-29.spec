@@ -4,13 +4,16 @@
 %define rfremix_version 29
 %define bug_version 29
 
+# Change this when branching to fNN
+%define doc_version f29
+
 # The package can only be built by a very small number of people
 # if you are not sure you can build it do not attempt to
 
 Summary:        RFRemix release files
 Name:           rfremix-release
 Version:        29
-Release:        0.18
+Release:        1
 Epoch:          2
 License:        MIT
 URL:            https://fedoraproject.org/
@@ -36,7 +39,7 @@ Provides:       fedora-release = %{epoch}:%{version}-%{release}
 Provides:       system-release
 Provides:       system-release(%{version})
 
-Requires:       fedora-repos(%{version})
+Requires:       fedora-repos(%{version}) >= 1
 BuildArch:      noarch
 
 %description
@@ -233,6 +236,7 @@ PRETTY_NAME="RFRemix %{rfremix_version} (%{release_name})"
 ANSI_COLOR="0;34"
 CPE_NAME="cpe:/o:fedoraproject:fedora:%{dist_version}"
 HOME_URL="https://fedoraproject.org/"
+DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora/%{doc_version}/system-administrators-guide/"
 SUPPORT_URL="https://fedoraproject.org/wiki/Communicating_and_getting_help"
 BUG_REPORT_URL="https://bugzilla.redhat.com/"
 REDHAT_BUGZILLA_PRODUCT="Fedora"
@@ -324,6 +328,7 @@ cp -p %{buildroot}/usr/lib/os.release.d/os-release-fedora \
 echo "VARIANT=\"Silverblue\"" >> %{buildroot}/usr/lib/os.release.d/os-release-silverblue
 echo "VARIANT_ID=silverblue" >> %{buildroot}/usr/lib/os.release.d/os-release-silverblue
 sed -i -e "s|(%{release_name})|(Silverblue)|g" %{buildroot}/usr/lib/os.release.d/os-release-silverblue
+sed -i -e 's|DOCUMENTATION_URL=.*|DOCUMENTATION_URL="https://docs.fedoraproject.org/en-US/fedora-silverblue/"|' %{buildroot}/usr/lib/os.release.d/os-release-silverblue
 
 # Sugar on a Stick
 cp -p %{buildroot}/usr/lib/os.release.d/os-release-fedora \
@@ -596,6 +601,10 @@ uninstall_edition("xfce")
 %attr(0644,root,root) /usr/lib/os.release.d/os-release-xfce
 
 %changelog
+* Sun Oct 14 2018 Mohan Boddu <mboddu@bhujji.com> 29-1
+- Setup for F29 Final
+- Add DOCUMENTATION_URL to os-release
+
 * Mon Oct 22 2018 Igor Gnatenko <ignatenkobrain@fedoraproject.org> - 29-0.18.R
 - Sync with Fedora
 
